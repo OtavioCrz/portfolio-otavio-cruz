@@ -196,5 +196,12 @@ Depois do deploy, valide nestas ferramentas:
 
 ## Deploy
 
-O `base` está como `'./'` em [vite.config.js](vite.config.js), então `dist/` funciona tanto na
-raiz quanto em subpasta (GitHub Pages de projeto, por exemplo). Publique o conteúdo de `dist/`.
+Automático: todo push na `main` dispara [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml),
+que roda `npm ci` + `npm run build` e publica o `dist/` no GitHub Pages em
+**https://otaviocruz.com.br**. O andamento aparece na aba *Actions* do repositório.
+
+- O Pages está com a fonte **GitHub Actions** (*Settings → Pages → Source*). O domínio fica
+  configurado nessa tela; com deploy por Actions o GitHub ignora o `public/CNAME`, que existe
+  só como registro do domínio.
+- O `base` está como `'./'` em [vite.config.js](vite.config.js), então o `dist/` funciona na raiz
+  do domínio e também em subpasta.
