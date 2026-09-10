@@ -3,6 +3,15 @@ import { gsap, useGSAP } from '../lib/gsap'
 import MagneticButton from './MagneticButton'
 import { CONTACT } from '../data/projects'
 
+/* Rodapé utilitário: redes e contato direto */
+const LINKS = [
+  { label: 'WhatsApp', href: CONTACT.whatsapp },
+  { label: 'Instagram', href: CONTACT.instagram },
+  { label: 'LinkedIn', href: CONTACT.linkedin },
+  { label: 'GitHub', href: CONTACT.github },
+  { label: 'E-mail', href: `mailto:${CONTACT.email}` },
+]
+
 function useLocalClock() {
   const [time, setTime] = useState('')
   useEffect(() => {
@@ -91,36 +100,27 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Rodapé utilitário */}
-      <div className="relative mt-[14vh] flex flex-col gap-6 border-t border-bone/12 pt-8 md:flex-row md:items-center md:justify-between">
+      {/* Rodapé utilitário — em linha só a partir do lg: com cinco links,
+          no tablet ele não cabe numa linha e empilha como no celular */}
+      <div className="relative mt-[14vh] flex flex-col gap-6 border-t border-bone/12 pt-8 lg:flex-row lg:items-center lg:justify-between">
         <span className="type-eyebrow text-ash">© {new Date().getFullYear()} Otávio Cruz</span>
 
         <nav className="flex flex-wrap items-center gap-x-8 gap-y-3" aria-label="Links de contato">
-          <a
-            data-cursor="hover"
-            href={CONTACT.whatsapp}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="type-eyebrow text-bone/80 transition-colors duration-300 hover:text-neon"
-          >
-            WhatsApp
-          </a>
-          <a
-            data-cursor="hover"
-            href={CONTACT.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="type-eyebrow text-bone/80 transition-colors duration-300 hover:text-neon"
-          >
-            GitHub
-          </a>
-          <a
-            data-cursor="hover"
-            href={`mailto:${CONTACT.email}`}
-            className="type-eyebrow text-bone/80 transition-colors duration-300 hover:text-neon"
-          >
-            E-mail
-          </a>
+          {LINKS.map(({ label, href }) => {
+            const external = href.startsWith('http')
+            return (
+              <a
+                key={label}
+                data-cursor="hover"
+                href={href}
+                target={external ? '_blank' : undefined}
+                rel={external ? 'noopener noreferrer' : undefined}
+                className="type-eyebrow text-bone/80 transition-colors duration-300 hover:text-neon"
+              >
+                {label}
+              </a>
+            )
+          })}
         </nav>
 
         <span className="type-eyebrow text-ash">

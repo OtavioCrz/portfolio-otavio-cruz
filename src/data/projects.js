@@ -45,7 +45,9 @@ export const PROJECTS = [
 
 export const CONTACT = {
   whatsapp: 'https://wa.me/5585988528359',
-  email: 'mariapitangasistemas@gmail.com',
+  email: 'oms.otaviio@gmail.com',
+  instagram: 'https://www.instagram.com/otavio.crz/',
+  linkedin: 'https://www.linkedin.com/in/ot%C3%A1vio-cruz-6b330b319/',
   github: 'https://github.com/otaviocrz',
   phoneLabel: '+55 85 98852-8359',
 }
