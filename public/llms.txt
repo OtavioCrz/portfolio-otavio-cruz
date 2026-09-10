@@ -31,6 +31,6 @@ React, Vite, GSAP (animações e ScrollTrigger), Tailwind CSS e Supabase.
 ## Links
 
 - [Portfólio](https://otaviocruz.com.br/)
-- [LinkedIn](https://www.linkedin.com/in/ot%C3%A1vio-cruz-6b330b319/)
+- [LinkedIn](https://www.linkedin.com/in/otaviocruzdev/)
 - [Instagram](https://www.instagram.com/otavio.crz/)
 - [GitHub](https://github.com/otaviocrz)
