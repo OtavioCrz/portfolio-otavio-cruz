@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1400" viewBox="0 0 1400 1400" role="img" aria-label="Frame 2">
+  <defs>
+    <radialGradient id="g2" cx="42%" cy="34%" r="72%">
+      <stop offset="0%" stop-color="#F2F0EA"/>
+      <stop offset="46%" stop-color="#A855F7"/>
+      <stop offset="72%" stop-color="#2E0F52"/>
+      <stop offset="100%" stop-color="#000000"/>
+    </radialGradient>
+    
+    <filter id="grain-2" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="2" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.3"/></feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="1400" height="1400" fill="#000000"/>
+  
+      <circle cx="700" cy="700" r="470" fill="none" stroke="#A855F7" stroke-width="2" opacity="0.55"/>
+      <circle cx="700" cy="700" r="330" fill="none" stroke="#F2F0EA" stroke-width="1" opacity="0.35"/>
+      <circle cx="700" cy="700" r="248" fill="url(#g2)"/>
+      <rect x="0" y="697" width="1400" height="6" fill="#A855F7" opacity="0.8"/>
+  <rect x="188" y="24" width="1025" height="19" fill="#A855F7" opacity="0.43"/><rect x="137" y="92" width="1127" height="5" fill="#F2F0EA" opacity="0.37"/><rect x="167" y="119" width="1066" height="15" fill="#000000" opacity="0.40"/><rect x="415" y="150" width="570" height="12" fill="#F2F0EA" opacity="0.66"/><rect x="517" y="200" width="366" height="13" fill="#A855F7" opacity="0.77"/><rect x="507" y="256" width="385" height="17" fill="#000000" opacity="0.76"/><rect x="583" y="284" width="233" height="22" fill="#F2F0EA" opacity="0.84"/><rect x="338" y="354" width="725" height="5" fill="#000000" opacity="0.58"/><rect x="152" y="407" width="1096" height="21" fill="#A855F7" opacity="0.39"/><rect x="574" y="440" width="252" height="12" fill="#F2F0EA" opacity="0.83"/><rect x="365" y="486" width="670" height="8" fill="#000000" opacity="0.61"/><rect x="595" y="541" width="211" height="14" fill="#000000" opacity="0.85"/><rect x="540" y="575" width="319" height="13" fill="#F2F0EA" opacity="0.79"/><rect x="489" y="613" width="422" height="5" fill="#A855F7" opacity="0.74"/><rect x="27" y="639" width="1346" height="22" fill="#F2F0EA" opacity="0.26"/><rect x="309" y="680" width="783" height="14" fill="#A855F7" opacity="0.55"/><rect x="404" y="730" width="592" height="19" fill="#000000" opacity="0.65"/><rect x="214" y="786" width="972" height="7" fill="#F2F0EA" opacity="0.45"/><rect x="127" y="810" width="1146" height="13" fill="#A855F7" opacity="0.36"/><rect x="484" y="871" width="432" height="22" fill="#000000" opacity="0.73"/><rect x="566" y="907" width="269" height="19" fill="#A855F7" opacity="0.82"/><rect x="595" y="941" width="210" height="9" fill="#F2F0EA" opacity="0.85"/><rect x="544" y="960" width="312" height="21" fill="#000000" opacity="0.80"/><rect x="68" y="1027" width="1265" height="15" fill="#000000" opacity="0.30"/><rect x="557" y="1089" width="286" height="9" fill="#000000" opacity="0.81"/><rect x="560" y="1128" width="279" height="5" fill="#000000" opacity="0.81"/><rect x="54" y="1149" width="1291" height="14" fill="#A855F7" opacity="0.29"/><rect x="50" y="1187" width="1300" height="14" fill="#A855F7" opacity="0.28"/><rect x="510" y="1215" width="381" height="10" fill="#A855F7" opacity="0.76"/><rect x="593" y="1275" width="214" height="10" fill="#F2F0EA" opacity="0.85"/><rect x="213" y="1318" width="973" height="12" fill="#F2F0EA" opacity="0.45"/><rect x="455" y="1354" width="489" height="12" fill="#F2F0EA" opacity="0.70"/><rect x="686" y="965" width="51" height="122" fill="#F2F0EA" opacity="0.95"/><rect x="579" y="961" width="26" height="123" fill="#F2F0EA" opacity="0.84"/><rect x="559" y="772" width="42" height="107" fill="#F2F0EA" opacity="0.75"/><rect x="713" y="1222" width="33" height="109" fill="#F2F0EA" opacity="0.82"/>
+  <text x="70" y="1336" font-family="Courier New, monospace" font-size="40" fill="#F2F0EA"
+    opacity="0.5" letter-spacing="6">02 / 08</text>
+  <rect width="1400" height="1400" filter="url(#grain-2)" opacity="0.5"/>
+</svg>

@@ -1,0 +1,274 @@
+@import "tailwindcss";
+
+/* ============================================================
+   FONTES — Clash Display (variable 200..700)
+   ============================================================ */
+@font-face {
+  font-family: "Clash Display";
+  src: url("./assets/fonts/ClashDisplay-Variable.woff2") format("woff2-variations"),
+       url("./assets/fonts/ClashDisplay-Variable.ttf") format("truetype-variations");
+  font-weight: 200 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Instância estática (Bold) — usada SÓ no texto vazado.
+   A fonte variável guarda contornos sobrepostos dentro de cada glifo
+   (a interpolação de peso precisa deles). Com preenchimento
+   transparente, o -webkit-text-stroke desenha cada contorno interno e
+   a letra aparece "fatiada". A instância estática tem as sobreposições
+   removidas: um contorno único por glifo. */
+@font-face {
+  font-family: "Clash Display Static";
+  src: url("./assets/fonts/ClashDisplay-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+@theme {
+  /* Superfícies */
+  --color-ink: #000000;
+  --color-void: #07060A;
+  --color-carbon: #0E0C12;
+
+  /* Tipografia */
+  --color-bone: #F2F0EA;
+  --color-ash: #7A756E;
+  --color-smoke: #45414B;
+
+  /* Roxo — escuro ao neon */
+  --color-plum: #17062B;
+  --color-grape: #2E0F52;
+  --color-violet: #5B21B6;
+  --color-neon: #A855F7;
+  --color-halo: #C9A7FF;
+
+  /* Famílias */
+  --font-display: "Clash Display", "Arial Black", "Helvetica Neue", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Roboto Mono", "Courier New", monospace;
+  --font-outline: "Clash Display Static", "Clash Display", "Arial Black", sans-serif;
+
+  /* Ritmo */
+  --ease-brutal: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Métricas do HERO — o espaçador reservado para a "fresta".
+     É de propósito MAIOR que a fresta em si (12vw x 23vh, definida em
+     CLIP_CLOSED_* no HeroMask.jsx): a diferença vira a margem de
+     respiro entre a tipografia e a borda da mídia. Ao mexer em um,
+     conferir o outro. */
+  --hero-gap-w: 17vw;
+  --hero-gap-h: 30vh;
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    background-color: var(--color-ink);
+    color-scheme: dark;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--color-ink);
+    color: var(--color-bone);
+    font-family: var(--font-display);
+    font-weight: 400;
+    overflow-x: clip;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Lenis */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-stopped {
+    overflow: clip;
+  }
+
+  ::selection {
+    background: var(--color-neon);
+    color: var(--color-ink);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+
+  img,
+  video {
+    display: block;
+    max-width: 100%;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-neon);
+    outline-offset: 4px;
+  }
+
+  /* Cursor nativo cede lugar ao customizado em ponteiros finos */
+  @media (hover: hover) and (pointer: fine) {
+    body,
+    a,
+    button,
+    [data-cursor] {
+      cursor: none;
+    }
+  }
+
+  /* Scrollbar discreta */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-ink);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-smoke);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-violet);
+  }
+}
+
+/* ============================================================
+   CLASSES DE COMPONENTE
+   Ficam na camada `components`, e não em `utilities`, de propósito:
+   assim qualquer utilitário do Tailwind aplicado no mesmo elemento
+   vence. Em `utilities`, por virem depois no arquivo, estas classes
+   ganhavam o empate — `leading-[0.94]` era ignorado ao lado de
+   .type-brutal (que força 0.82) e `mt-6` ao lado de .line-mask.
+   ============================================================ */
+@layer components {
+  /* Caixa de tipografia brutal: peso máximo, tracking negativo */
+  .type-brutal {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.045em;
+    /* o tracking negativo também encolhe o espaço entre palavras;
+       devolvemos só o espaço, mantendo as letras coladas */
+    word-spacing: 0.16em;
+    line-height: 0.82;
+    text-transform: uppercase;
+  }
+
+  /* Separa a tipografia da mídia sem precisar de painel sólido.
+     Em `em` para o desfoque caber sempre dentro do padding da
+     .line-mask (0.3em): um desfoque maior é recortado pela máscara e
+     deixa uma borda dura atravessando a linha de baixo. */
+  .type-onmedia {
+    text-shadow: 0 0.02em 0.14em rgba(0, 0, 0, 0.6);
+  }
+
+  .type-eyebrow {
+    font-family: var(--font-mono);
+    font-size: clamp(0.625rem, 0.9vw, 0.75rem);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+
+  /* Máscara de linha para reveal vertical.
+     O padding amplia a AREA VISIVEL (para acentos e descidas caberem
+     com leading apertado) e a margem negativa devolve a altura de
+     layout — as linhas continuam coladas. Em troca, o deslocamento de
+     reveal precisa ser generoso: ver REVEAL_OFFSET nos componentes. */
+  .line-mask {
+    display: block;
+    overflow: hidden;
+    padding-block: 0.3em;
+    margin-block: -0.3em;
+  }
+
+  .line-mask > * {
+    display: block;
+  }
+
+  /* A fresta do hero.
+     O clip é montado a partir de duas variáveis em vez de uma string
+     `inset(...)` inteira: o navegador colapsa `inset(a b a b)` para dois
+     valores no computed style, e o GSAP então casa a estrutura antiga
+     com a nova ao recriar a timeline, produzindo um recorte inválido.
+     Variáveis são números simples — imunes a esse problema. */
+  .hero-mask {
+    clip-path: inset(var(--clip-y, 0%) var(--clip-x, 0%) var(--clip-y, 0%) var(--clip-x, 0%));
+    will-change: clip-path;
+  }
+
+  /* Foto do perfil: grayscale por padrão, cor total no hover.
+     Em telas de toque (sem hover) a cor entra quando a foto cruza o
+     meio da tela — o ScrollTrigger aplica .is-inview no container.
+     `scale` é a propriedade independente, então não briga com o
+     transform que o GSAP escreve no parallax. */
+  .photo-reveal img {
+    filter: grayscale(1) contrast(1.06);
+    transition:
+      filter 0.9s var(--ease-out-expo),
+      scale 1.2s var(--ease-out-expo);
+  }
+
+  @media (hover: hover) {
+    .photo-reveal:hover img {
+      filter: grayscale(0) contrast(1);
+      scale: 1.035;
+    }
+  }
+
+  @media (hover: none) {
+    .photo-reveal.is-inview img {
+      filter: grayscale(0) contrast(1);
+    }
+  }
+
+  .gpu {
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
+  /* Esconde até o preloader liberar (evita flash de conteúdo) */
+  .boot-hidden {
+    visibility: hidden;
+  }
+}
+
+/* ============================================================
+   ACESSIBILIDADE
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

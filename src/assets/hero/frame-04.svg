@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1400" viewBox="0 0 1400 1400" role="img" aria-label="Frame 4">
+  <defs>
+    
+    
+    <filter id="grain-4" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="4" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.3"/></feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="1400" height="1400" fill="#000000"/>
+  
+      <g transform="rotate(-28 700 700)">
+        <rect x="-400" y="604" width="2200" height="192" fill="#F2F0EA"/>
+        <rect x="-400" y="850" width="2200" height="26" fill="#A855F7"/>
+        <rect x="-400" y="470" width="2200" height="12" fill="#A855F7" opacity="0.6"/>
+      </g>
+      <rect x="692" y="0" width="16" height="1400" fill="#2E0F52" opacity="0.9"/>
+  <rect x="135" y="24" width="1129" height="20" fill="#F2F0EA" opacity="0.37"/><rect x="83" y="61" width="1234" height="23" fill="#F2F0EA" opacity="0.32"/><rect x="321" y="101" width="757" height="5" fill="#000000" opacity="0.56"/><rect x="460" y="136" width="481" height="7" fill="#000000" opacity="0.71"/><rect x="285" y="172" width="830" height="4" fill="#000000" opacity="0.53"/><rect x="549" y="203" width="302" height="9" fill="#000000" opacity="0.80"/><rect x="583" y="221" width="234" height="21" fill="#F2F0EA" opacity="0.84"/><rect x="595" y="288" width="211" height="16" fill="#F2F0EA" opacity="0.85"/><rect x="484" y="338" width="432" height="10" fill="#A855F7" opacity="0.73"/><rect x="549" y="385" width="302" height="10" fill="#000000" opacity="0.80"/><rect x="177" y="406" width="1046" height="15" fill="#F2F0EA" opacity="0.41"/><rect x="433" y="455" width="533" height="13" fill="#F2F0EA" opacity="0.68"/><rect x="176" y="478" width="1047" height="20" fill="#000000" opacity="0.41"/><rect x="95" y="514" width="1209" height="22" fill="#A855F7" opacity="0.33"/><rect x="552" y="581" width="296" height="14" fill="#F2F0EA" opacity="0.81"/><rect x="196" y="613" width="1008" height="6" fill="#F2F0EA" opacity="0.43"/><rect x="280" y="659" width="840" height="11" fill="#000000" opacity="0.52"/><rect x="555" y="714" width="291" height="21" fill="#F2F0EA" opacity="0.81"/><rect x="530" y="782" width="340" height="4" fill="#000000" opacity="0.78"/><rect x="308" y="830" width="784" height="20" fill="#F2F0EA" opacity="0.55"/><rect x="234" y="899" width="931" height="18" fill="#000000" opacity="0.47"/><rect x="590" y="928" width="219" height="11" fill="#A855F7" opacity="0.85"/><rect x="96" y="953" width="1207" height="5" fill="#A855F7" opacity="0.33"/><rect x="186" y="981" width="1029" height="10" fill="#F2F0EA" opacity="0.42"/><rect x="278" y="1031" width="845" height="14" fill="#F2F0EA" opacity="0.52"/><rect x="402" y="1095" width="596" height="21" fill="#A855F7" opacity="0.65"/><rect x="590" y="1128" width="220" height="8" fill="#A855F7" opacity="0.84"/><rect x="532" y="1163" width="335" height="5" fill="#000000" opacity="0.78"/><rect x="497" y="1180" width="405" height="10" fill="#A855F7" opacity="0.75"/><rect x="45" y="1239" width="1310" height="5" fill="#000000" opacity="0.28"/><rect x="552" y="1260" width="297" height="17" fill="#000000" opacity="0.80"/><rect x="178" y="1317" width="1044" height="7" fill="#A855F7" opacity="0.41"/><rect x="463" y="1351" width="474" height="9" fill="#000000" opacity="0.71"/><rect x="699" y="1354" width="47" height="26" fill="#F2F0EA" opacity="0.50"/><rect x="645" y="62" width="28" height="71" fill="#000000" opacity="0.74"/><rect x="588" y="273" width="78" height="79" fill="#000000" opacity="0.75"/><rect x="672" y="782" width="72" height="118" fill="#F2F0EA" opacity="0.94"/>
+  <text x="70" y="1336" font-family="Courier New, monospace" font-size="40" fill="#F2F0EA"
+    opacity="0.5" letter-spacing="6">04 / 08</text>
+  <rect width="1400" height="1400" filter="url(#grain-4)" opacity="0.5"/>
+</svg>

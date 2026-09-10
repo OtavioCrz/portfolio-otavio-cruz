@@ -1,633 +1,121 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Portfólio de Otavio Cruz, desenvolvedor front-end em Fortaleza. Crio sites modernos, responsivos e otimizados. Disponivel para freelas e contratacoes.">
-  <meta name="keywords" content="desenvolvedor front-end, freelancer, portfolio, web, Fortaleza, HTML, CSS, JavaScript, sites responsivos">
-  <meta name="author" content="Otávio Cruz">
-  <meta name="robots" content="index, follow, max-image-preview:large">
-  <meta name="theme-color" content="#FFE500">
-  <link rel="canonical" href="https://otaviocruz.com.br/">
-  
-  <!-- Open Graph -->
-  <meta property="og:title" content="Otavio Cruz - Desenvolvedor Front-end e Portfólio">
-  <meta property="og:description" content="Desenvolvedor front-end em Fortaleza. Crio sites modernos, responsivos e otimizados. Disponivel para contratacoes.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://otaviocruz.com.br/">
-  <meta property="og:image" content="https://otaviocruz.com.br/src/assets/images/profile/imagem-minha.jpeg">
-  <meta property="og:site_name" content="Otavio Cruz">
-  <meta property="og:locale" content="pt_BR">
+<!doctype html>
+<html lang="pt-BR" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
 
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Otavio Cruz - Desenvolvedor Front-end">
-  <meta name="twitter:description" content="Portfolio com projetos, habilidades e contato. Disponivel para contratacoes e freelas.">
-  <meta name="twitter:image" content="https://otaviocruz.com.br/src/assets/images/profile/imagem-minha.jpeg">
-  
-  <title>Otavio Cruz - Desenvolvedor Front-end | Portfolio e Contratacoes</title>
-  
-  <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="./public/favicon.ico">
-  
-  <!-- CSS -->
-  <link rel="stylesheet" href="./src/css/main.css">
-  
-  <!-- Preconnect for Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- ================================================================
+         SEO TÉCNICO
+         As URLs absolutas abaixo usam o domínio definido em VITE_SITE_URL,
+         no arquivo .env da raiz. Troque o domínio LÁ — um lugar só.
+         og:image, og:url, canonical e o JSON-LD precisam de URL absoluta:
+         caminho relativo quebra o preview no WhatsApp, LinkedIn e X.
 
-  <!-- Structured Data -->
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "Person",
-          "name": "Otavio Cruz",
-          "jobTitle": "Desenvolvedor Front-end",
-          "url": "https://otaviocruz.com.br/",
-          "image": "https://otaviocruz.com.br/src/assets/images/profile/imagem-minha.jpeg",
-          "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Fortaleza",
-            "addressRegion": "CE",
-            "addressCountry": "BR"
+         Estas tags ficam no HTML estático (e não num React Helmet) porque
+         os robôs de preview não executam JavaScript.
+         ================================================================ -->
+    <title>Otávio Cruz | Desenvolvedor Front-End &amp; Web Designer Premium</title>
+    <meta
+      name="description"
+      content="Especialista em criar sites de alta performance, animações fluidas e design focado em conversão para marcas que buscam exclusividade."
+    />
+    <meta name="author" content="Otávio Cruz" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+    <link rel="canonical" href="%VITE_SITE_URL%/" />
+
+    <!-- Open Graph — WhatsApp, LinkedIn, Facebook, Slack, Discord -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content="Otávio Cruz" />
+    <meta property="og:title" content="Otávio Cruz | Desenvolvedor Front-End &amp; Web Designer Premium" />
+    <meta
+      property="og:description"
+      content="Especialista em criar sites de alta performance, animações fluidas e design focado em conversão para marcas que buscam exclusividade."
+    />
+    <meta property="og:url" content="%VITE_SITE_URL%/" />
+
+    <!-- ▼▼ IMAGEM DE PREVIEW (og-image.jpg) ▼▼
+         O arquivo está em public/og-image.jpg e é publicado na raiz do
+         site, então a URL abaixo já aponta para ele assim que o domínio
+         do .env estiver certo.
+         Para trocar a imagem: substitua public/og-image.jpg mantendo o
+         nome (1200x630, JPG, idealmente abaixo de 300 KB). Se preferir
+         hospedar em outro lugar, cole a URL completa aqui E em twitter:image. -->
+    <meta property="og:image" content="%VITE_SITE_URL%/og-image.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Otávio Cruz — Desenvolvedor Front-End &amp; Web Designer" />
+    <!-- ▲▲ IMAGEM DE PREVIEW ▲▲ -->
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Otávio Cruz | Desenvolvedor Front-End &amp; Web Designer Premium" />
+    <meta
+      name="twitter:description"
+      content="Especialista em criar sites de alta performance, animações fluidas e design focado em conversão para marcas que buscam exclusividade."
+    />
+    <meta name="twitter:image" content="%VITE_SITE_URL%/og-image.jpg" />
+    <meta name="twitter:image:alt" content="Otávio Cruz — Desenvolvedor Front-End &amp; Web Designer" />
+
+    <!-- Dados estruturados (schema.org) — Person + WebSite -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "%VITE_SITE_URL%/#otavio-cruz",
+            "name": "Otávio Cruz",
+            "jobTitle": "Desenvolvedor Front-End & Web Designer",
+            "description": "Especialista em criar sites de alta performance, animações fluidas e design focado em conversão para marcas que buscam exclusividade.",
+            "url": "%VITE_SITE_URL%/",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Fortaleza",
+              "addressRegion": "CE",
+              "addressCountry": "BR"
+            },
+            "knowsAbout": [
+              "Desenvolvimento Front-End",
+              "Web Design",
+              "Design de Interfaces",
+              "Animação Web",
+              "Performance Web",
+              "React",
+              "Vite",
+              "GSAP",
+              "Tailwind CSS",
+              "Supabase"
+            ],
+            "sameAs": ["https://github.com/otaviocrz"],
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "contactType": "sales",
+              "telephone": "+55-85-98852-8359",
+              "url": "https://wa.me/5585988528359",
+              "availableLanguage": "pt-BR"
+            }
           },
-          "sameAs": [
-            "https://github.com/OtavioCrz",
-            "https://www.linkedin.com/in/ot%C3%A1vio-cruz-6b330b319/",
-            "https://www.instagram.com/otavio.crz/"
-          ]
-        },
-        {
-          "@type": "WebSite",
-          "name": "Otavio Cruz - Portfolio",
-          "url": "https://otaviocruz.com.br/"
-        }
-      ]
-    }
-  </script>
-</head>
-<body>
-  
-  <!-- Loading Screen -->
-  <div class="loading">
-    <div class="loading__spinner"></div>
-  </div>
-  
-  <!-- Custom Cursor (optional) -->
-  <div class="custom-cursor"></div>
-  
-  <!-- Loading Popup -->
-  <div class="loading-popup" id="loadingPopup">
-    <div class="loading-popup__content">
-      <div class="loading-popup__spinner-wrapper">
-        <div class="loading-popup__spinner"></div>
-      </div>
-      <h3 class="loading-popup__title">Enviando</h3>
-      <p class="loading-popup__message">
-        Preparando suas mensagens<span class="loading-popup__dots">
-          <span class="loading-popup__dot"></span>
-          <span class="loading-popup__dot"></span>
-          <span class="loading-popup__dot"></span>
-        </span>
-      </p>
-    </div>
-  </div>
-  
-  <!-- Header -->
-  <header class="header">
-    <div class="container header__container">
-      <a href="#hero" class="header__logo">OTÁVIO CRUZ</a>
-      
-      <nav class="header__nav">
-        <ul class="nav__list">
-          <li><a href="#hero" class="nav__link active">Início</a></li>
-          <li><a href="#about" class="nav__link">Sobre</a></li>
-          <li><a href="#projects" class="nav__link">Projetos</a></li>
-          <li><a href="#skills" class="nav__link">Skills</a></li>
-          <li><a href="#contact" class="nav__link">Contato</a></li>
-        </ul>
-      </nav>
-      
-      <button class="menu-toggle" aria-label="Toggle menu">
-        <span class="menu-toggle__bar"></span>
-        <span class="menu-toggle__bar"></span>
-        <span class="menu-toggle__bar"></span>
-      </button>
-    </div>
-  </header>
-  
-  <!-- Hero Section -->
-  <section id="hero" class="hero">
-    <div class="container hero__container">
-      <div class="hero__content">
-        <span class="hero__greeting" data-reveal="fade-down">Olá! 👋</span>
-        
-        <h1 class="hero__title" data-reveal="fade-up" data-reveal-delay="100">
-          Eu sou <span class="hero__title-highlight">Otávio Cruz</span>,<br>
-          Desenvolvedor Front-end
-        </h1>
-        
-        <p class="hero__description" data-reveal="fade-up" data-reveal-delay="200">
-          Desenvolvedor Front-end especializado em criar interfaces incríveis com HTML, CSS e JavaScript. 
-          Transformo ideias em realidade através de código limpo e design ousado.
-        </p>
-        
-        <div class="hero__cta" data-reveal="fade-up" data-reveal-delay="300">
-          <a href="#projects" class="btn hero__cta-btn">Ver Projetos</a>
-          <a href="#contact" class="btn btn-secondary hero__cta-btn">Entre em Contato</a>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Decorative Elements -->
-    <div class="hero__decoration hero__decoration--1" data-parallax="0.3"></div>
-    <div class="hero__decoration hero__decoration--2" data-parallax="0.5"></div>
-    <div class="hero__decoration hero__decoration--3" data-parallax="0.2"></div>
-    
-    <!-- Scroll Indicator -->
-    <div class="hero__scroll" style="opacity: 0.6; transform: scale(0.7)">
-      <span class="hero__scroll-text">Scroll</span>
-      <div class="hero__scroll-arrow"></div>
-    </div>
-  </section>
-  
-  <!-- About Section -->
-  <section id="about" class="about section">
-    <div class="container about__container">
-      <div class="about__image-wrapper" data-reveal="fade-left">
-        <img src="./src/assets/images/profile/imagem-minha.jpeg" alt="Otávio Cruz" class="about__image">
-        <div class="about__image-decoration"></div>
-      </div>
-      
-      <div class="about__content">
-        <h2 class="about__title" data-reveal="fade-right">Sobre Mim</h2>
-        
-        <p class="about__text" data-reveal="fade-right" data-reveal-delay="100">
-          Sou um desenvolvedor Front-end apaixonado por criar experiências digitais incríveis 
-          que combinam design ousado com código limpo. Especializado em HTML, CSS e JavaScript, 
-          transformo ideias em produtos digitais de alto impacto.
-        </p>
-        
-        <p class="about__text" data-reveal="fade-right" data-reveal-delay="200">
-          Minha abordagem combina criatividade com tecnologia de ponta. Com ajuda de IA, 
-          consigo expandir meus conhecimentos para outras linguagens e ferramentas. 
-          Busco sempre soluções que superem as expectativas dos usuários.
-        </p>
-        
-        <div class="about__highlights" data-reveal-stagger data-reveal-delay="300">
-          <div class="about__highlight-item reveal-child">
-            <div class="about__highlight-number">2+</div>
-            <div class="about__highlight-label">Anos de Experiência</div>
-          </div>
-          
-          <div class="about__highlight-item reveal-child">
-            <div class="about__highlight-number">10+</div>
-            <div class="about__highlight-label">Projetos Concluídos</div>
-          </div>
-          
-          <div class="about__highlight-item reveal-child">
-            <div class="about__highlight-number">100%</div>
-            <div class="about__highlight-label">Clientes Felizes</div>
-          </div>
-          
-          <div class="about__highlight-item reveal-child">
-            <div class="about__highlight-number">100%</div>
-            <div class="about__highlight-label">Dedicação</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  
-  <!-- Projects Section -->
-  <section id="projects" class="projects section">
-    <div class="container">
-      <div class="projects__header">
-        <h2 class="projects__title" data-reveal="fade-up">Meus Projetos</h2>
-        
-        <div class="projects__filter" data-reveal="fade-up" data-reveal-delay="100">
-          <button class="projects__filter-btn active" data-filter="all">Todos</button>
-          <button class="projects__filter-btn" data-filter="web">Web</button>
-          <button class="projects__filter-btn" data-filter="mobile">Mobile</button>
-          <button class="projects__filter-btn" data-filter="design">Design</button>
-        </div>
-      </div>
-      
-      <div class="projects__grid" data-reveal-stagger>
-        <!-- Project Card 1 -->
-        <article class="project-card" data-category="web">
-          <div class="project-card__image">
-            <span class="project-card__tag">Web</span>
-            <img src="./src/assets/images/projects/floramazonia-preview.png" alt="Floramazônia Distribuidora - Preview do site">
-          </div>
-          
-          <div class="project-card__content">
-            <h3 class="project-card__title">Floramazônia Distribuidora</h3>
-            
-            <p class="project-card__description">
-              Site responsivo para distribuidora de produtos, com design moderno 
-              e interface intuitiva. Projeto profissional desenvolvido com foco em UX.
-            </p>
-            
-            <div class="project-card__tech">
-              <span class="project-card__tech-item">HTML</span>
-              <span class="project-card__tech-item">CSS</span>
-              <span class="project-card__tech-item">JavaScript</span>
-            </div>
-            
-            <div class="project-card__links">
-              <a href="https://otaviocrz.github.io/Floramaz-nia-Web-Site/" target="_blank" class="project-card__link">Ver Projeto</a>
-              <a href="https://github.com/otaviocrz/Floramaz-nia-Web-Site" target="_blank" class="project-card__link project-card__link--secondary">Código</a>
-            </div>
-          </div>
-        </article>
-        
-        <!-- Project Card 2 -->
-        <article class="project-card" data-category="web">
-          <div class="project-card__image">
-            <span class="project-card__tag">Web</span>
-            PROJETO DE ESTUDO
-          </div>
-          
-          <div class="project-card__content">
-            <h3 class="project-card__title">Projetos de Aprendizado</h3>
-            
-            <p class="project-card__description">
-              Diversos projetos desenvolvidos para aprendizado e prática. 
-              Exploração de conceitos, técnicas e ferramentas novas.
-            </p>
-            
-            <div class="project-card__tech">
-              <span class="project-card__tech-item">HTML</span>
-              <span class="project-card__tech-item">CSS</span>
-              <span class="project-card__tech-item">JavaScript</span>
-            </div>
-            
-            <div class="project-card__links">
-              <a href="https://github.com/otaviocrz" target="_blank" class="project-card__link">Ver Repositório</a>
-              <a href="https://github.com/otaviocrz" target="_blank" class="project-card__link project-card__link--secondary">Código</a>
-            </div>
-          </div>
-        </article>
-        
-        <!-- Project Card 3 -->
-        <article class="project-card" data-category="web">
-          <div class="project-card__image">
-            <span class="project-card__tag">Web</span>
-            PORTFOLIO
-          </div>
-          
-          <div class="project-card__content">
-            <h3 class="project-card__title">Portfolio Neo-Brutalist</h3>
-            
-            <p class="project-card__description">
-              Portfolio pessoal com design Neo-Brutalist. 
-              Desenvolvido com HTML, CSS e JavaScript puro, sem frameworks.
-            </p>
-            
-            <div class="project-card__tech">
-              <span class="project-card__tech-item">HTML</span>
-              <span class="project-card__tech-item">CSS</span>
-              <span class="project-card__tech-item">JavaScript</span>
-            </div>
-            
-            <div class="project-card__links">
-              <a href="#" class="project-card__link">Ver Projeto</a>
-              <a href="https://github.com/otaviocrz" target="_blank" class="project-card__link project-card__link--secondary">Código</a>
-            </div>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-  
-  <!-- Skills Section -->
-  <section id="skills" class="skills section">
-    <div class="container">
-      <div class="skills__header">
-        <h2 class="skills__title" data-reveal="fade-up">Minhas Skills</h2>
-        <p class="skills__subtitle" data-reveal="fade-up" data-reveal-delay="100">
-          Tecnologias e ferramentas que domino para criar soluções incríveis
-        </p>
-      </div>
-      
-      <div class="skills__grid" data-reveal-stagger>
-        <!-- Frontend Skills -->
-        <div class="skill-category">
-          <div class="skill-category__header">
-            <div class="skill-category__icon">💻</div>
-            <h3 class="skill-category__title">Frontend</h3>
-          </div>
-          
-          <div class="skill-category__list">
-            <div class="skill-item">
-              <div class="skill-item__header">
-                <span class="skill-item__name">HTML/CSS</span>
-                <span class="skill-item__level">Avançado</span>
-              </div>
-              <div class="skill-item__bar">
-                <div class="skill-item__progress" style="width: 90%"></div>
-              </div>
-            </div>
-            
-            <div class="skill-item">
-              <div class="skill-item__header">
-                <span class="skill-item__name">JavaScript</span>
-                <span class="skill-item__level">Avançado</span>
-              </div>
-              <div class="skill-item__bar">
-                <div class="skill-item__progress" style="width: 85%"></div>
-              </div>
-            </div>
-            
-            <div class="skill-item">
-              <div class="skill-item__header">
-                <span class="skill-item__name">React.js</span>
-                <span class="skill-item__level">Intermediário</span>
-              </div>
-              <div class="skill-item__bar">
-                <div class="skill-item__progress" style="width: 70%"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Backend Skills -->
-        <div class="skill-category">
-          <div class="skill-category__header">
-            <div class="skill-category__icon">⚙️</div>
-            <h3 class="skill-category__title">Backend</h3>
-          </div>
-          
-          <div class="skill-category__list">
-            <div class="skill-item">
-              <div class="skill-item__header">
-                <span class="skill-item__name">Node.js</span>
-                <span class="skill-item__level">Iniciante</span>
-              </div>
-              <div class="skill-item__bar">
-                <div class="skill-item__progress" style="width: 45%"></div>
-              </div>
-            </div>
-            
-            <div class="skill-item">
-              <div class="skill-item__header">
-                <span class="skill-item__name">Python</span>
-                <span class="skill-item__level">Iniciante</span>
-              </div>
-              <div class="skill-item__bar">
-                <div class="skill-item__progress" style="width: 40%"></div>
-              </div>
-            </div>
-            
-            <div class="skill-item">
-              <div class="skill-item__header">
-                <span class="skill-item__name">PostgreSQL</span>
-                <span class="skill-item__level">Iniciante</span>
-              </div>
-              <div class="skill-item__bar">
-                <div class="skill-item__progress" style="width: 40%"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Design Skills -->
-        <div class="skill-category">
-          <div class="skill-category__header">
-            <div class="skill-category__icon">🎨</div>
-            <h3 class="skill-category__title">Design</h3>
-          </div>
-          
-          <div class="skill-category__list">
-            <div class="skill-item">
-              <div class="skill-item__header">
-                <span class="skill-item__name">Design Geral</span>
-                <span class="skill-item__level">Avançado</span>
-              </div>
-              <div class="skill-item__bar">
-                <div class="skill-item__progress" style="width: 85%"></div>
-              </div>
-            </div>
-            
-            <div class="skill-item">
-              <div class="skill-item__header">
-                <span class="skill-item__name">UI/UX</span>
-                <span class="skill-item__level">Avançado</span>
-              </div>
-              <div class="skill-item__bar">
-                <div class="skill-item__progress" style="width: 80%"></div>
-              </div>
-            </div>
-            
-            <div class="skill-item">
-              <div class="skill-item__header">
-                <span class="skill-item__name">Figma (em aprendizado)</span>
-                <span class="skill-item__level">Iniciante</span>
-              </div>
-              <div class="skill-item__bar">
-                <div class="skill-item__progress" style="width: 20%"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Skill Badges -->
-      <div class="skills__badges" data-reveal="fade-up" data-reveal-delay="400">
-        <h3 class="skills__badges-title">Outras Tecnologias</h3>
-        <div class="skills__badges-grid" data-reveal-stagger>
-          <span class="skill-badge">Git</span>
-          <span class="skill-badge">GitHub</span>
-          <span class="skill-badge">REST API</span>
-          <span class="skill-badge">Responsive Design</span>
-          <span class="skill-badge">SEO</span>
-          <span class="skill-badge">Performance</span>
-          <span class="skill-badge">Accessibility</span>
-          <span class="skill-badge">Com suporte de IA</span>
-        </div>
-      </div>
-    </div>
-  </section>
-  
-  <!-- Contact Section -->
-  <section id="contact" class="contact section">
-    <div class="container contact__container">
-      <div class="contact__header">
-        <h2 class="contact__title" data-reveal="fade-up">Vamos Trabalhar Juntos!</h2>
-        <p class="contact__subtitle" data-reveal="fade-up" data-reveal-delay="100">
-          Tem um projeto em mente? Entre em contato e vamos criar algo incrível!
-        </p>
-      </div>
-      
-      <div class="contact__content">
-        <div class="contact__info" data-reveal="fade-right" data-reveal-delay="200">
-          <h3 class="contact__info-title">Informações de Contato</h3>
-          
-          <div class="contact__info-item">
-            <div class="contact__info-icon">📧</div>
-            <div class="contact__info-content">
-              <p class="contact__info-label">Email</p>
-              <p class="contact__info-value">otaviocruz.dev@gmail.com</p>
-            </div>
-          </div>
-          
-          <div class="contact__info-item">
-            <div class="contact__info-icon">📱</div>
-            <div class="contact__info-content">
-              <p class="contact__info-label">Telefone</p>
-              <p class="contact__info-value">+55 (85) 98852-8359</p>
-            </div>
-          </div>
-          
-          <div class="contact__info-item">
-            <div class="contact__info-icon">📍</div>
-            <div class="contact__info-content">
-              <p class="contact__info-label">Localização</p>
-              <p class="contact__info-value">Fortaleza - CE, Brasil</p>
-            </div>
-          </div>
-          
-          <div class="contact__social">
-            <a href="https://github.com/OtavioCrz" target="_blank" rel="noopener noreferrer" class="contact__social-link" aria-label="GitHub">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.002 12.002 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-            </a>
-            <a href="https://www.linkedin.com/in/ot%C3%A1vio-cruz-6b330b319/" target="_blank" rel="noopener noreferrer" class="contact__social-link" aria-label="LinkedIn">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.475-2.236-1.986-2.236-1.081 0-1.722.722-2.002 1.436-.103.25-.129.599-.129.948v5.421h-3.554s.05-8.733 0-9.633h3.554v1.363c-.009.015-.022.03-.033.044h.033v-.044c.537-.827 1.5-2.006 3.649-2.006 2.667 0 4.671 1.743 4.671 5.491v5.785zM5.337 8.855c-1.144 0-1.915-.758-1.915-1.71 0-.956.77-1.71 1.958-1.71 1.187 0 1.927.754 1.958 1.71 0 .952-.771 1.71-1.958 1.71zm1.581 11.597H3.715V9.819h3.203v10.633zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg>
-            </a>
-            <a href="https://www.instagram.com/otavio.crz/" target="_blank" rel="noopener noreferrer" class="contact__social-link" aria-label="Instagram">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.057-1.645.069-4.849.069-3.204 0-3.584-.012-4.849-.069-3.259-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.015-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zM5.838 12a6.162 6.162 0 1 1 12.324 0 6.162 6.162 0 0 1-12.324 0zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm4.965-10.322a1.44 1.44 0 1 1 2.881.001 1.44 1.44 0 0 1-2.881-.001z"/></svg>
-            </a>
-          </div>
-        </div>
-        
-        <form class="contact__form" data-reveal="fade-left" data-reveal-delay="200">
-          <div class="form__group">
-            <label for="name" class="form__label">Nome</label>
-            <input 
-              type="text" 
-              id="name" 
-              name="name" 
-              class="form__input" 
-              required
-              placeholder="Seu nome completo"
-            >
-          </div>
-          
-          <div class="form__group">
-            <label for="email" class="form__label">Email</label>
-            <input 
-              type="email" 
-              id="email" 
-              name="email" 
-              class="form__input" 
-              required
-              placeholder="seu@email.com"
-            >
-          </div>
-          
-          <div class="form__group">
-            <label for="subject" class="form__label">Assunto</label>
-            <input 
-              type="text" 
-              id="subject" 
-              name="subject" 
-              class="form__input" 
-              required
-              placeholder="Sobre o que você quer falar?"
-            >
-          </div>
-          
-          <div class="form__group">
-            <label for="message" class="form__label">Mensagem</label>
-            <textarea 
-              id="message" 
-              name="message" 
-              class="form__textarea" 
-              required
-              placeholder="Conte-me sobre seu projeto..."
-            ></textarea>
-          </div>
-          
-          <button type="submit" class="form__submit">
-            Enviar Mensagem
-          </button>
-        </form>
-      </div>
-    </div>
-  </section>
-  
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container footer__container">
-      <div class="footer__brand">
-        <div class="footer__logo">OTÁVIO CRUZ</div>
-        <p class="footer__description">
-          Desenvolvedor Front-end especializado em criar interfaces incríveis 
-          através de design ousado e código limpo.
-        </p>
-        <div class="footer__social">
-          <a href="https://github.com/OtavioCrz" target="_blank" rel="noopener noreferrer" class="footer__social-link" aria-label="GitHub">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.002 12.002 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-          </a>
-          <a href="https://www.linkedin.com/in/ot%C3%A1vio-cruz-6b330b319/" target="_blank" rel="noopener noreferrer" class="footer__social-link" aria-label="LinkedIn">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.475-2.236-1.986-2.236-1.081 0-1.722.722-2.002 1.436-.103.25-.129.599-.129.948v5.421h-3.554s.05-8.733 0-9.633h3.554v1.363c-.009.015-.022.03-.033.044h.033v-.044c.537-.827 1.5-2.006 3.649-2.006 2.667 0 4.671 1.743 4.671 5.491v5.785zM5.337 8.855c-1.144 0-1.915-.758-1.915-1.71 0-.956.77-1.71 1.958-1.71 1.187 0 1.927.754 1.958 1.71 0 .952-.771 1.71-1.958 1.71zm1.581 11.597H3.715V9.819h3.203v10.633zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg>
-          </a>
-          <a href="https://www.instagram.com/otavio.crz/" target="_blank" rel="noopener noreferrer" class="footer__social-link" aria-label="Instagram">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.057-1.645.069-4.849.069-3.204 0-3.584-.012-4.849-.069-3.259-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.015-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zM5.838 12a6.162 6.162 0 1 1 12.324 0 6.162 6.162 0 0 1-12.324 0zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm4.965-10.322a1.44 1.44 0 1 1 2.881.001 1.44 1.44 0 0 1-2.881-.001z"/></svg>
-          </a>
-        </div>
-      </div>
-      
-      <div class="footer__links">
-        <h4 class="footer__section-title">Links Rápidos</h4>
-        <a href="#hero" class="footer__link">Início</a>
-        <a href="#about" class="footer__link">Sobre</a>
-        <a href="#projects" class="footer__link">Projetos</a>
-        <a href="#skills" class="footer__link">Skills</a>
-        <a href="#contact" class="footer__link">Contato</a>
-      </div>
-      
-      <div class="footer__contact">
-        <h4 class="footer__section-title">Contato</h4>
-        <div class="footer__contact-item">
-          <div class="footer__contact-icon">📧</div>
-          <span>otaviocruz.dev@gmail.com</span>
-        </div>
-        <div class="footer__contact-item">
-          <div class="footer__contact-icon">📱</div>
-          <span>+55 (85) 98852-8359</span>
-        </div>
-        <div class="footer__newsletter">
-          <p>Receba atualizações</p>
-          <form class="footer__newsletter-form">
-            <input 
-              type="email" 
-              class="footer__newsletter-input" 
-              placeholder="Seu email"
-              required
-            >
-            <button type="submit" class="footer__newsletter-btn">OK</button>
-          </form>
-        </div>
-      </div>
-    </div>
-    
-    <div class="container footer__bottom">
-      <p class="footer__copyright">
-        &copy; 2026 Otávio Cruz. Todos os direitos reservados.
-      </p>
-      <button class="footer__back-to-top">
-        ↑ Voltar ao Topo
-      </button>
-    </div>
-  </footer>
-  
-  <!-- JavaScript -->
-  <script type="module" src="./src/js/main.js"></script>
-  
-</body>
+          {
+            "@type": "WebSite",
+            "@id": "%VITE_SITE_URL%/#website",
+            "url": "%VITE_SITE_URL%/",
+            "name": "Otávio Cruz — Portfólio",
+            "description": "Especialista em criar sites de alta performance, animações fluidas e design focado em conversão para marcas que buscam exclusividade.",
+            "inLanguage": "pt-BR",
+            "author": { "@id": "%VITE_SITE_URL%/#otavio-cruz" },
+            "publisher": { "@id": "%VITE_SITE_URL%/#otavio-cruz" }
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
