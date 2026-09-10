@@ -192,6 +192,9 @@
     font-family: var(--font-mono);
     font-size: clamp(0.625rem, 0.9vw, 0.75rem);
     letter-spacing: 0.22em;
+    /* Dentro de um .type-brutal, o word-spacing em `em` chega aqui já
+       convertido em px do título gigante — espaços enormes no texto miúdo. */
+    word-spacing: normal;
     text-transform: uppercase;
     font-weight: 400;
   }

@@ -8,7 +8,10 @@ import Cursor from './components/Cursor'
 import Nav from './components/Nav'
 import HeroMask from './components/HeroMask'
 import About from './components/About'
+import Services from './components/Services'
 import Projects from './components/Projects'
+import Testimonials from './components/Testimonials'
+import FAQ from './components/FAQ'
 import Footer from './components/Footer'
 
 export default function App() {
@@ -54,7 +57,10 @@ export default function App() {
         <main>
           <HeroMask />
           <About />
+          <Services />
           <Projects />
+          <Testimonials />
+          <FAQ />
         </main>
 
         <Footer />

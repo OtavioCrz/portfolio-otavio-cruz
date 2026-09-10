@@ -120,7 +120,7 @@ export default function Projects() {
         <div>
           <span className="line-mask">
             <span data-reveal className="type-eyebrow block text-neon">
-              Vitrine — 003
+              Vitrine — 004
             </span>
           </span>
           <div className="line-mask mt-4">

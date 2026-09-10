@@ -68,7 +68,7 @@ export default function Footer() {
       <div className="relative flex flex-col items-center text-center">
         <div className="line-mask">
           <span data-reveal className="type-eyebrow block text-neon">
-            Contato — 004
+            Contato — 007
           </span>
         </div>
 
