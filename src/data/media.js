@@ -13,9 +13,13 @@ const modules = import.meta.glob('../assets/hero/*.{jpg,jpeg,png,webp,avif,svg}'
 
 export const HERO_FRAMES = Object.keys(modules)
   .sort()
-  .map((path) => ({
+  .map((path, i, paths) => ({
     src: modules[path],
     id: path.split('/').pop().replace(/\.\w+$/, ''),
+    /* Os quadros são decorativos (aria-hidden no HeroMask), mas o Bing conta
+       alt="" como "alt ausente" — então cada um leva uma legenda neutra, que
+       continua verdadeira se as imagens forem trocadas. */
+    alt: `Quadro ${i + 1} de ${paths.length} da animação de abertura do portfólio`,
   }))
 
 /* Duração de cada frame no loop stop-motion (segundos) */

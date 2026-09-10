@@ -230,7 +230,7 @@ export default function Projects() {
               key={project.id}
               data-preview-img
               src={armed ? project.cover : undefined}
-              alt=""
+              alt={`Prévia do projeto ${project.title}`}
               width={project.coverWidth}
               height={project.coverHeight}
               loading="lazy"

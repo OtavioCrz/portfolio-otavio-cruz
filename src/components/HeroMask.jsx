@@ -193,7 +193,7 @@ export default function HeroMask() {
               key={frame.id}
               data-frame
               src={frame.src}
-              alt=""
+              alt={frame.alt}
               aria-hidden="true"
               draggable="false"
               loading="eager"
