@@ -1,7 +1,14 @@
 /**
  * Camada de grão sobre toda a página.
  * SVG inline em data-URI: sem requisição, sem canvas, sem custo de JS.
- * A animação desloca o background em passos — dá a textura viva de filme.
+ * A animação desloca a textura em passos — dá a textura viva de filme.
+ *
+ * Os deslocamentos são em px e nunca passam da sobra da camada (128px em
+ * cada lado; o maior deslocamento é 96px). Antes eram em %, relativos a
+ * uma camada de 200% da tela: um passo de 35% andava 70% da tela — mais
+ * que a sobra de 50% — e o topo ficava ~90ms sem grão a cada ciclo, uma
+ * faixa mais escura piscando junto ao header. Em px a cobertura não
+ * depende do tamanho da tela, e a camada deixa de ter 4x a área da tela.
  */
 const NOISE =
   "data:image/svg+xml;utf8," +
@@ -20,17 +27,17 @@ export default function Grain() {
     <>
       <style>{`
         @keyframes grain-shift {
-          0%   { transform: translate(0, 0); }
-          10%  { transform: translate(-5%, -10%); }
-          20%  { transform: translate(-15%, 5%); }
-          30%  { transform: translate(7%, -25%); }
-          40%  { transform: translate(-5%, 25%); }
-          50%  { transform: translate(-15%, 10%); }
-          60%  { transform: translate(15%, 0); }
-          70%  { transform: translate(0, 15%); }
-          80%  { transform: translate(3%, 35%); }
-          90%  { transform: translate(-10%, 10%); }
-          100% { transform: translate(0, 0); }
+          0%   { transform: translate3d(0, 0, 0); }
+          10%  { transform: translate3d(-48px, -64px, 0); }
+          20%  { transform: translate3d(-96px, 24px, 0); }
+          30%  { transform: translate3d(40px, -96px, 0); }
+          40%  { transform: translate3d(-32px, 88px, 0); }
+          50%  { transform: translate3d(-80px, 48px, 0); }
+          60%  { transform: translate3d(96px, 0, 0); }
+          70%  { transform: translate3d(0, 72px, 0); }
+          80%  { transform: translate3d(24px, 96px, 0); }
+          90%  { transform: translate3d(-64px, 40px, 0); }
+          100% { transform: translate3d(0, 0, 0); }
         }
         @media (prefers-reduced-motion: reduce) {
           [data-grain] { animation: none !important; }
@@ -42,7 +49,7 @@ export default function Grain() {
       >
         <div
           data-grain
-          className="absolute -inset-[50%] opacity-[0.16] mix-blend-overlay"
+          className="absolute -inset-[128px] opacity-[0.16] mix-blend-overlay"
           style={{
             backgroundImage: `url("${NOISE}")`,
             backgroundRepeat: 'repeat',
