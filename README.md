@@ -6,7 +6,7 @@ Dark mode nativo, tipografia Clash Display e um hero com máscara dirigida por s
 ```bash
 npm install
 npm run dev        # http://localhost:5173
-npm run build      # gera dist/ + sitemap.xml e robots.txt
+npm run build      # dist/ pré-renderizado + sitemap.xml e robots.txt
 npm run preview    # serve o build
 npm run media      # regenera os frames placeholder do hero
 ```
@@ -78,7 +78,10 @@ src/
 │   ├── HeroMask.jsx      # seção pinada + timeline mestre
 │   ├── Manifesto.jsx     # texto de impacto (revelado pelo HeroMask)
 │   ├── About.jsx         # perfil: foto + declaração + letreiro da stack
+│   ├── Services.jsx      # serviços: lista vazada, hover preenche e abre descrição
 │   ├── Projects.jsx      # vitrine com hover reveal
+│   ├── Testimonials.jsx  # depoimentos fixados (pin) com troca por scroll
+│   ├── FAQ.jsx           # accordion acessível
 │   ├── Footer.jsx        # CTA magnético + contato
 │   ├── Marquee.jsx       # letreiro infinito
 │   ├── MagneticButton.jsx
@@ -95,7 +98,13 @@ src/
 ├── data/
 │   ├── projects.js         # projetos e contato
 │   ├── profile.js          # foto, textos do perfil e stack
+│   ├── services.js         # serviços e área de atendimento
+│   ├── testimonials.js     # depoimentos
+│   ├── faq.js              # perguntas frequentes
 │   └── media.js            # frames do hero (glob automático)
+├── seo/
+│   └── structured-data.js  # JSON-LD de serviços e FAQ, gerado dos dados acima
+├── entry-server.jsx        # entrada da pré-renderização (roda em Node no build)
 ├── assets/
 │   ├── hero/               # frames do slideshow
 │   ├── work/               # capas dos projetos
@@ -132,12 +141,19 @@ distorção. As capas da prévia só são baixadas quando a vitrine chega perto 
 
 ## Editando o conteúdo
 
+> Texto provisório nos depoimentos? Marque `TESTIMONIALS_ARE_PROVISIONAL = true` em
+> `src/data/testimonials.js`: todo build passa a avisar até a flag voltar para `false`.
+
 | O quê | Onde |
 | --- | --- |
 | Título, descrição e tags de compartilhamento | `index.html` |
 | Domínio do site (URLs absolutas do SEO) | `.env` → `VITE_SITE_URL` |
 | Projetos, links e contato | `src/data/projects.js` |
 | Perfil: título, texto, princípios e stack | `src/data/profile.js` |
+| Serviços e área de atendimento | `src/data/services.js` |
+| Depoimentos | `src/data/testimonials.js` |
+| Perguntas frequentes (e o JSON-LD `FAQPage`) | `src/data/faq.js` |
+| Resumo para assistentes de IA | `public/llms.txt` |
 | Texto do manifesto | `src/components/Manifesto.jsx` |
 | Estilo do texto vazado | `src/lib/type.js` |
 | Cores, fontes e métricas do hero | `src/index.css` (`@theme`) |
@@ -157,8 +173,16 @@ no card de compartilhamento.
 - **Imagem de preview.** `public/og-image.jpg` (1200×630). A arte da fresta foi gerada na
   Higgsfield (GPT Image 2) e o nome foi composto por cima na Clash Display, a mesma fonte do site.
   Para trocar, substitua o arquivo mantendo o nome.
-- **Dados estruturados.** JSON-LD com `Person` (nome, cargo, cidade, WhatsApp e GitHub) e
-  `WebSite`, ligados por `@id`.
+- **Dados estruturados.** Dois blocos JSON-LD no `<head>`, ligados por `@id`:
+  - identidade — `Person`, `ProfessionalService` (Brasil e Portugal) e `WebSite` — escrita no
+    `index.html`;
+  - conteúdo — `OfferCatalog` (serviços) e `FAQPage` — **gerado no build** por
+    [`src/seo/structured-data.js`](src/seo/structured-data.js) a partir dos mesmos dados que desenham
+    as seções. O Google exige que o FAQ marcado seja igual ao FAQ visível; assim os dois nunca
+    divergem.
+- **llms.txt.** [`public/llms.txt`](public/llms.txt) resume perfil, serviços, atendimento e stack em
+  Markdown para assistentes de IA. É uma convenção recente: custo zero, mas nenhuma IA grande
+  confirmou que usa.
 - **robots.txt e sitemap.xml.** Gerados em `dist/` ao fim de todo `npm run build` por
   [`scripts/generate-sitemap.mjs`](scripts/generate-sitemap.mjs), só com módulos nativos do Node.
   O script resolve `VITE_SITE_URL` com a mesma precedência do Vite (variável de ambiente >
@@ -180,6 +204,34 @@ Depois do deploy, valide nestas ferramentas:
 
 ---
 
+## Pré-renderização (HTML para robôs de IA)
+
+Os robôs de IA (GPTBot, ClaudeBot, PerplexityBot) não executam JavaScript. Num SPA puro eles
+recebiam só `<div id="root"></div>` — **0 palavras**. Agora o build entrega a página inteira no
+HTML (~570 palavras).
+
+[`scripts/prerender.mjs`](scripts/prerender.mjs) roda depois do `vite build`:
+
+1. faz um build SSR de [`src/entry-server.jsx`](src/entry-server.jsx) com a mesma config do Vite —
+   as imagens saem com os mesmos hashes do build do cliente;
+2. renderiza o `<App/>` com `react-dom/server` e injeta o HTML no `#root` do `dist/index.html`;
+3. troca o comentário `<!-- app:structured-data -->` pelo JSON-LD de serviços e FAQ;
+4. confere que toda imagem citada no HTML existe no `dist/`.
+
+No navegador, [`main.jsx`](src/main.jsx) usa `hydrateRoot`: o React adota esse HTML em vez de
+redesenhar. Os efeitos (GSAP) só rodam no navegador, então o HTML sai no estado inicial, sem
+estilos de animação congelados. Sem navegador headless: rápido no CI e idêntico a cada build.
+
+Regras para manter a hidratação limpa:
+
+- nada de `window`/`document` durante o render — só em `useEffect`/`useGSAP` (o
+  [`lib/gsap.js`](src/lib/gsap.js) já protege o que roda na importação);
+- o primeiro render precisa ser igual no servidor e no cliente (o `useMediaQuery` responde
+  `false` no servidor e só depois assume o valor real);
+- o GSAP não reescreve DOM do React (as palavras dos depoimentos são `<span>` do próprio React).
+
+---
+
 ## Acessibilidade
 
 - `prefers-reduced-motion` desliga o pin, o scrub, o smooth scroll, o letreiro e a
@@ -191,6 +243,13 @@ Depois do deploy, valide nestas ferramentas:
   quando o mouse sai da janela e volta no primeiro movimento; o estado de hover é recalculado
   a cada movimento, então um elemento desmontado não o deixa preso.
 - Foco visível preservado em todos os links.
+- Menu mobile: botão com `aria-expanded`/`aria-controls`; aberto, foca o primeiro link, fecha com
+  Esc e deixa o resto da página `inert` e sem rolagem; fechado, devolve o foco ao botão.
+- Serviços: cada linha é um link focável; o foco pelo teclado tem o mesmo efeito do hover, e em
+  telas de toque as descrições já vêm abertas.
+- FAQ: padrão de accordion da WAI-ARIA (`button` + `aria-expanded`/`aria-controls`); resposta
+  fechada fica `inert`, fora do foco e do leitor de tela.
+- Depoimentos: com movimento reduzido não há pin — os depoimentos ficam empilhados.
 
 ---
 
@@ -203,5 +262,5 @@ que roda `npm ci` + `npm run build` e publica o `dist/` no GitHub Pages em
 - O Pages está com a fonte **GitHub Actions** (*Settings → Pages → Source*). O domínio fica
   configurado nessa tela; com deploy por Actions o GitHub ignora o `public/CNAME`, que existe
   só como registro do domínio.
-- O `base` está como `'./'` em [vite.config.js](vite.config.js), então o `dist/` funciona na raiz
-  do domínio e também em subpasta.
+- O `base` é `'/'` em [vite.config.js](vite.config.js): o site mora na raiz do domínio, e a
+  pré-renderização precisa das mesmas URLs absolutas de assets que o build do cliente.

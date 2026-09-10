@@ -71,6 +71,7 @@ export default function Preloader({ onComplete }) {
   return (
     <div
       ref={root}
+      data-preloader
       className="fixed inset-0 z-[110] flex flex-col justify-between bg-ink px-6 md:px-[6vw] py-[6vh]"
     >
       <div data-meta className="type-eyebrow flex justify-between text-ash">

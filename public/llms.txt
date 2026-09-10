@@ -1,0 +1,34 @@
+# Otávio Cruz — Desenvolvedor Front-End & Web Designer
+
+> Desenvolvedor front-end e web designer baseado em Fortaleza (Brasil). Cria landing pages de alta conversão e sites institucionais premium, e faz otimização de performance e SEO técnico para empresas de qualquer nicho no Brasil e em Portugal.
+
+Otávio Cruz projeta e desenvolve sites sob medida, do layout ao código de produção, com foco em velocidade de carregamento, animações fluidas e design que transforma visitantes em clientes. O atendimento é feito online para clientes no Brasil e em Portugal. Orçamentos e contato pelo WhatsApp.
+
+## Serviços
+
+- **Landing Pages de Alta Conversão**: páginas de venda e captação com um único objetivo — transformar visita em contato. Copy com hierarquia, carregamento instantâneo e chamadas para ação no ponto certo, prontas para tráfego pago.
+- **Sites Institucionais Premium**: o site oficial da marca, com design exclusivo e animações fluidas, pensado para gerar confiança e pedidos de orçamento.
+- **Otimização de Performance e SEO**: Core Web Vitals, HTML pré-renderizado, dados estruturados e SEO técnico para aparecer no Google e ser lido por assistentes de IA.
+
+## Atendimento
+
+- Países: Brasil e Portugal
+- Nichos: qualquer segmento — franquias, prestadores de serviço, profissionais liberais e empresas B2B
+- Formato: projetos sob medida, com processo online (reuniões por videochamada, aprovação de layout e entregas remotas)
+- Idioma: português
+- Contato: WhatsApp +55 85 98852-8359 — https://wa.me/5585988528359
+
+## Stack
+
+React, Vite, GSAP (animações e ScrollTrigger), Tailwind CSS e Supabase.
+
+## Projetos
+
+- [Maria Pitanga — Site institucional](https://otaviocrz.github.io/Site-Maria-Pitanga/): site oficial de uma rede de franquias de açaí.
+- [Unimais — Landing page de alta conversão](https://otaviocrz.github.io/Landing-Page-Unimais/): página de captação focada em conversão.
+- [Maria Pitanga Portugal — Expansão internacional](https://mariapitangaacaiteria.pt/): site da expansão da marca para Portugal.
+
+## Links
+
+- [Portfólio](https://otaviocruz.com.br/)
+- [GitHub](https://github.com/otaviocrz)
