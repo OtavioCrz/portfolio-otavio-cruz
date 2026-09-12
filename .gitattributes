@@ -1,0 +1,5 @@
+# Binários com cabeçalho em texto: o Git não acha byte nulo no começo do arquivo e os
+# trata como texto. Com core.autocrlf=true (Windows), um checkout trocaria os bytes 0x0A
+# dos pixels do HDR por 0D 0A — e o environment do diamante chegaria corrompido.
+*.hdr binary
+*.glb binary
