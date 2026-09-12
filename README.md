@@ -158,6 +158,15 @@ qualquer mudança e não mostra nada.
   contexto nenhum, porque derrubar um contexto por software trava a página por segundos.
 - `checkShaderErrors` desligado em produção: a checagem síncrona obrigava o driver a terminar
   cada compilação na hora.
+- Shaders compilados antes do 1º quadro com `compileAsync` (as duas variantes do material de
+  transmissão), para o navegador compilar em paralelo onde houver `KHR_parallel_shader_compile`.
+- [`ChunkBoundary`](src/components/ChunkBoundary.jsx) em volta do que é carregado sob demanda: se o
+  chunk do 3D (ou da política) não chegar, some só ele — sem a fronteira, um erro de render
+  desmontava a página inteira.
+
+> **Lighthouse.** A inicialização do palco 3D responde por quase todo o TBT do laboratório: numa
+> comparação local alternada (12/09/2026), o site fez 63 no mobile e 71 no desktop com o 3D, e
+> 89 e 98 com o chunk do 3D bloqueado.
 
 **Animações**
 
@@ -190,6 +199,33 @@ qualquer mudança e não mostra nada.
 
 ---
 
+## Analytics, cookies e privacidade (LGPD)
+
+- **GA4 com Consent Mode v2, no modo básico.** O `<head>` do [`index.html`](index.html) só declara
+  o consentimento padrão, negado para tudo (`analytics_storage`, `ad_storage`, `ad_user_data`,
+  `ad_personalization`). O `gtag.js` **não** está no HTML: [`src/lib/analytics.js`](src/lib/analytics.js)
+  o carrega só depois do aceite — e quem já aceitou numa visita anterior recebe o script numa
+  folga do navegador depois do `load`. Sem aceite, nenhuma requisição vai para o Google, e o
+  Lighthouse, que abre o site sem aceite, nunca vê o script.
+- **Só analytics.** O aceite libera `analytics_storage`; os sinais de anúncio continuam negados e
+  o Google Signals fica desligado — o site não tem publicidade.
+- **Aviso** — [`CookieBanner.jsx`](src/components/CookieBanner.jsx): aparece depois da cortina do
+  preloader para quem ainda não escolheu. A escolha fica no `localStorage` (`oc-consent`, por 12
+  meses) e o link "Cookies" do rodapé reabre o aviso a qualquer momento. Recusar depois de ter
+  aceitado desliga o GA e apaga os cookies `_ga`.
+- **Política** — [`PrivacyPolicy.jsx`](src/components/PrivacyPolicy.jsx): overlay de tela cheia
+  com endereço próprio, `/#privacidade`, que o botão voltar do navegador fecha. É um chunk à
+  parte, baixado só quando alguém a abre. O texto fica em [`src/data/privacy.js`](src/data/privacy.js):
+  é um modelo, feito a partir do que o site faz — revise antes de publicar.
+- **A política mudou em algo que envolve cookies?** Atualize a data no `privacy.js` e suba
+  `VERSION` no `analytics.js`: o aviso volta a pedir a escolha de todo mundo.
+
+> O "Testar instalação" do Google Analytics procura a tag no HTML e não vai encontrá-la — ela
+> só carrega depois do aceite. Para validar, abra o site, aceite os cookies e veja o relatório
+> *Tempo real*.
+
+---
+
 ## Estrutura
 
 ```
@@ -209,6 +245,9 @@ src/
 │   ├── Cursor.jsx
 │   ├── Nav.jsx
 │   ├── Grain.jsx
+│   ├── CookieBanner.jsx  # aviso de cookies (LGPD) e escolha do consentimento
+│   ├── PrivacyPolicy.jsx # política de privacidade: overlay em /#privacidade (chunk à parte)
+│   ├── ChunkBoundary.jsx # fronteira de erro dos chunks sob demanda (3D, política)
 │   └── DiamondLayer.jsx  # monta o palco 3D só no cliente (WebGL, sem movimento reduzido)
 ├── three/                  # chunk à parte, carregado depois da hidratação
 │   ├── DiamondStage.jsx    # <Canvas> global, environment e loop de render (travas de performance)
@@ -217,8 +256,10 @@ src/
 │   └── diamondState.js     # estado, quadros-chave e misturas do final
 ├── hooks/
 │   ├── useSmoothScroll.js  # Lenis acoplado ao ticker do GSAP
+│   ├── usePrivacyRoute.js  # abre e fecha a política pelo endereço (#privacidade)
 │   └── useMediaQuery.js
 ├── lib/
+│   ├── analytics.js        # GA4 + Consent Mode v2 (modo básico) e a escolha salva
 │   ├── gsap.js             # registro de plugins, config global e camadas de GPU sob demanda
 │   ├── stage.js            # quem está cobrindo o palco 3D (e o pausa)
 │   └── type.js             # classes do texto vazado
@@ -228,6 +269,7 @@ src/
 │   ├── services.js         # serviços e área de atendimento
 │   ├── testimonials.js     # depoimentos
 │   ├── faq.js              # perguntas frequentes
+│   ├── privacy.js          # texto da política de privacidade
 │   └── media.js            # frames do hero (glob automático)
 ├── seo/
 │   └── structured-data.js  # JSON-LD de serviços e FAQ, gerado dos dados acima
@@ -293,6 +335,8 @@ celular em tela 3x. Para trocar uma capa, exporte o WebP nessa largura (qualidad
 | Material, luzes e máscara do diamante | `src/three/Diamond.jsx` |
 | Ritmo do final (giro, zoom e revelação do contato) | `src/three/useDiamondChoreography.js` |
 | Travas de performance do 3D (fps, dpr, degraus de qualidade) | `src/three/DiamondStage.jsx` |
+| Texto da política de privacidade | `src/data/privacy.js` |
+| ID do Google Analytics e validade da escolha de cookies | `src/lib/analytics.js` |
 
 ---
 
@@ -390,6 +434,10 @@ Regras para manter a hidratação limpa:
 - Depoimentos: com movimento reduzido não há pin — os depoimentos ficam empilhados.
 - Diamante 3D: com movimento reduzido (ou sem WebGL) o palco não é montado e o contato fica
   visível como sempre; o canvas é `aria-hidden` e não recebe ponteiro.
+- Aviso de cookies: região rotulada e não modal (não rouba o foco); recusar é tão visível quanto
+  aceitar, e a escolha pode ser mudada pelo link "Cookies" do rodapé.
+- Política de privacidade: `role="dialog"` com `aria-modal`; o resto da página fica `inert`, Esc
+  e o botão voltar do navegador fecham, e o foco volta para onde estava.
 
 ---
 

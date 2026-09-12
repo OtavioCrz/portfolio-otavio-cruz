@@ -79,6 +79,9 @@
     background-color: var(--color-ink);
     color-scheme: dark;
     -webkit-tap-highlight-color: transparent;
+    /* reserva a calha da barra de rolagem: travar a rolagem (menu, política) não
+       muda a largura da página por baixo — nem a quebra de linha que os pins medem */
+    scrollbar-gutter: stable;
   }
 
   body {

@@ -1,7 +1,7 @@
 import { memo, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useThree } from '@react-three/fiber'
 import { Environment, Lightformer } from '@react-three/drei'
-import { ACESFilmicToneMapping } from 'three'
+import { ACESFilmicToneMapping, BackSide } from 'three'
 import cityHdr from '../assets/env/potsdamer_platz_512.hdr?url'
 import { gsap, ScrollTrigger } from '../lib/gsap'
 import { isStageHidden } from '../lib/stage'
@@ -50,6 +50,29 @@ function Choreography(props) {
   return null
 }
 
+/* Compila os programas antes do 1º quadro, sem travar a thread principal: compileAsync
+   usa KHR_parallel_shader_compile e só resolve quando o driver termina. O material de
+   transmissão tem duas variantes — a passada de trás usa side = BackSide —, então as duas.
+   Sem isto, o 1º render compilava tudo de uma vez numa única tarefa longa. */
+async function precompile(gl, scene, camera) {
+  await gl.compileAsync(scene, camera)
+  const flipped = []
+  scene.traverse((object) => {
+    const material = object.material
+    if (material?.uniforms?._transmission && material.side !== BackSide) {
+      flipped.push([material, material.side])
+      material.side = BackSide
+      material.needsUpdate = true
+    }
+  })
+  if (!flipped.length) return
+  await gl.compileAsync(scene, camera)
+  for (const [material, side] of flipped) {
+    material.side = side
+    material.needsUpdate = true
+  }
+}
+
 /* Environment "silencioso": o HDR do preset "city" do drei (Potsdamer Platz, Poly Haven,
    CC0), servido pelo próprio site, com background={false} — reflexos sem mexer no preto da
    página. Reduzido de 1024×512 para 512×256: a 0,1 de intensidade a cidade é só textura nas
@@ -84,6 +107,9 @@ const DarkStudio = memo(function DarkStudio() {
  */
 function RenderDriver({ ready, lowPower, last, onSlow }) {
   const advance = useThree((three) => three.advance)
+  const gl = useThree((three) => three.gl)
+  const scene = useThree((three) => three.scene)
+  const camera = useThree((three) => three.camera)
   const readyRef = useRef(ready)
   const lastRef = useRef(last)
 
@@ -93,6 +119,8 @@ function RenderDriver({ ready, lowPower, last, onSlow }) {
   }, [ready, last])
 
   useEffect(() => {
+    let compiled = false
+    let compiling = false
     let warmed = false
     let next = 0
     let previous = 0
@@ -102,6 +130,18 @@ function RenderDriver({ ready, lowPower, last, onSlow }) {
     let strike = false
 
     const tick = (time) => {
+      /* nada sai antes de os shaders estarem prontos (ver precompile) */
+      if (!compiled) {
+        if (!compiling) {
+          compiling = true
+          precompile(gl, scene, camera)
+            .catch(() => {})
+            .then(() => {
+              compiled = true
+            })
+        }
+        return
+      }
       if (warmed && (!readyRef.current || isStageHidden() || document.hidden)) {
         graceUntil = time + GRACE
         windowStart = -1
@@ -149,7 +189,7 @@ function RenderDriver({ ready, lowPower, last, onSlow }) {
 
     gsap.ticker.add(tick)
     return () => gsap.ticker.remove(tick)
-  }, [advance, lowPower, onSlow])
+  }, [advance, gl, scene, camera, lowPower, onSlow])
 
   return null
 }

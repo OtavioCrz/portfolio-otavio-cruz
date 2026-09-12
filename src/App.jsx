@@ -1,6 +1,8 @@
-import { useCallback, useEffect, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import { ScrollTrigger } from './lib/gsap'
+import { readConsent, startAnalytics } from './lib/analytics'
 import { useSmoothScroll } from './hooks/useSmoothScroll'
+import { usePrivacyRoute } from './hooks/usePrivacyRoute'
 
 import Preloader from './components/Preloader'
 import Grain from './components/Grain'
@@ -14,9 +16,17 @@ import Testimonials from './components/Testimonials'
 import FAQ from './components/FAQ'
 import Footer from './components/Footer'
 import DiamondLayer from './components/DiamondLayer'
+import CookieBanner from './components/CookieBanner'
+import ChunkBoundary from './components/ChunkBoundary'
+
+/* A política só é baixada quando alguém a abre: link do aviso, do rodapé ou /#privacidade */
+const PrivacyPolicy = lazy(() => import('./components/PrivacyPolicy'))
 
 export default function App() {
   const [ready, setReady] = useState(false)
+  /* aviso de cookies: null = fechado; { delay } = aberto */
+  const [cookies, setCookies] = useState(null)
+  const privacy = usePrivacyRoute()
 
   /* Lenis só entra em cena depois da cortina sair */
   useSmoothScroll(ready)
@@ -42,6 +52,17 @@ export default function App() {
     window.addEventListener('load', onLoad)
     return () => window.removeEventListener('load', onLoad)
   }, [])
+
+  /* Analytics (lib/analytics): quem já aceitou recebe o GA numa folga depois do load;
+     quem ainda não escolheu vê o aviso — depois da cortina, sem disputar a abertura. */
+  useEffect(() => {
+    startAnalytics()
+  }, [])
+  useEffect(() => {
+    if (ready && readConsent() === null) setCookies({ delay: 1.2 })
+  }, [ready])
+  const openCookies = useCallback(() => setCookies((current) => current ?? { delay: 0 }), [])
+  const closeCookies = useCallback(() => setCookies(null), [])
 
   return (
     <>
@@ -69,8 +90,19 @@ export default function App() {
           <FAQ />
         </main>
 
-        <Footer />
+        <Footer onOpenPolicy={privacy.show} onOpenCookies={openCookies} />
       </div>
+
+      {/* Aviso de cookies e política: só no cliente — dependem do localStorage e do
+          endereço, e ficam fora do HTML pré-renderizado. */}
+      {cookies && <CookieBanner delay={cookies.delay} onOpenPolicy={privacy.show} onClosed={closeCookies} />}
+      {privacy.mounted && (
+        <ChunkBoundary>
+          <Suspense fallback={null}>
+            <PrivacyPolicy open={privacy.open} onClose={privacy.hide} onExited={privacy.onExited} />
+          </Suspense>
+        </ChunkBoundary>
+      )}
     </>
   )
 }

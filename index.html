@@ -5,6 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#000000" />
     <meta name="color-scheme" content="dark" />
+
+    <!-- Google Analytics 4 — Consent Mode v2, modo básico (LGPD).
+         Aqui fica SÓ o consentimento padrão, negado para tudo, antes de qualquer
+         outro script. O gtag.js não está nesta página: quem o carrega é
+         src/lib/analytics.js, depois do aceite no aviso de cookies — então nada vai
+         para o Google sem consentimento, e LCP/TBT não pagam pelo script. -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'default', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'denied'
+      });
+    </script>
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
     <!-- Sem JavaScript, o conteúdo pré-renderizado fica legível: some a

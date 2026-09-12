@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
+import ChunkBoundary from './ChunkBoundary'
 
 /* O palco 3D (three + R3F + drei, ~290 KB gzip, mais o HDR e o modelo) é um chunk à
    parte, montado só no navegador e depois da hidratação. Fica fora do HTML
@@ -55,8 +56,10 @@ export default function DiamondLayer({ ready }) {
 
   if (!enabled) return null
   return (
-    <Suspense fallback={null}>
-      <DiamondStage ready={ready} />
-    </Suspense>
+    <ChunkBoundary>
+      <Suspense fallback={null}>
+        <DiamondStage ready={ready} />
+      </Suspense>
+    </ChunkBoundary>
   )
 }

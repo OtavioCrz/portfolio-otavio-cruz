@@ -33,7 +33,7 @@ function LocalClock() {
   return <span className="tabular-nums text-bone/70">{time}</span>
 }
 
-export default function Footer() {
+export default function Footer({ onOpenPolicy, onOpenCookies }) {
   const root = useRef(null)
 
   useGSAP(
@@ -122,7 +122,29 @@ export default function Footer() {
       {/* Rodapé utilitário — em linha só a partir do lg: com cinco links,
           no tablet ele não cabe numa linha e empilha como no celular */}
       <div className="relative mt-[14vh] flex flex-col gap-6 border-t border-bone/12 pt-8 lg:flex-row lg:items-center lg:justify-between">
-        <span className="type-eyebrow text-ash">© {new Date().getFullYear()} Otávio Cruz</span>
+        {/* privacidade e cookies (LGPD): a política e a escolha, sempre a um clique */}
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+          <span className="type-eyebrow text-ash">© {new Date().getFullYear()} Otávio Cruz</span>
+          <a
+            href="#privacidade"
+            data-cursor="hover"
+            onClick={(event) => {
+              event.preventDefault()
+              onOpenPolicy?.()
+            }}
+            className="type-eyebrow text-ash underline decoration-bone/25 underline-offset-4 transition-colors duration-300 hover:text-neon"
+          >
+            Privacidade
+          </a>
+          <button
+            type="button"
+            data-cursor="hover"
+            onClick={onOpenCookies}
+            className="type-eyebrow text-ash underline decoration-bone/25 underline-offset-4 transition-colors duration-300 hover:text-neon"
+          >
+            Cookies
+          </button>
+        </div>
 
         <nav className="flex flex-wrap items-center gap-x-8 gap-y-3" aria-label="Links de contato">
           {LINKS.map(({ label, href }) => {

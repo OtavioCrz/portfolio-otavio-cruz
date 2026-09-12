@@ -7,6 +7,9 @@ import { useMediaQuery } from '../hooks/useMediaQuery'
  * A área de captura é maior que o botão visível, então ele começa a
  * ser "puxado" antes do cursor tocá-lo. O rótulo se desloca em uma
  * fração do deslocamento do botão — cria paralaxe interna.
+ *
+ * Com `href` é um link (externo abre em nova aba); sem ele, um <button>
+ * — o "Voltar" da política de privacidade, por exemplo.
  */
 export default function MagneticButton({
   href,
@@ -15,6 +18,11 @@ export default function MagneticButton({
   className = '',
   ...rest
 }) {
+  const Tag = href ? 'a' : 'button'
+  const external = /^https?:/.test(href ?? '')
+  const tagProps = href
+    ? { href, ...(external && { target: '_blank', rel: 'noopener noreferrer' }) }
+    : { type: 'button' }
   const root = useRef(null)
   const canHover = useMediaQuery('(hover: hover) and (pointer: fine)')
   const prefersReduced = useMediaQuery('(prefers-reduced-motion: reduce)')
@@ -73,12 +81,10 @@ export default function MagneticButton({
 
   return (
     <div ref={root} className="inline-block p-[3vw] md:p-[2.5vw]">
-      <a
+      <Tag
         data-magnet
         data-cursor="hover"
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
+        {...tagProps}
         className={`group relative isolate inline-flex items-center justify-center overflow-hidden rounded-full border border-bone/25 px-[clamp(2rem,6vw,5rem)] py-[clamp(1.1rem,3vw,2.4rem)] ${className}`}
         {...rest}
       >
@@ -94,7 +100,7 @@ export default function MagneticButton({
         >
           {children}
         </span>
-      </a>
+      </Tag>
     </div>
   )
 }
