@@ -72,6 +72,17 @@ page = page
   .replace(ROOT_MARKER, () => `<div id="root">${html}</div>`)
   .replace(LD_MARKER, () => `<script type="application/ld+json">${json}</script>`)
 
+/* 3b. pré-carrega as fontes que o CSS usa. O preloader só libera a página quando elas
+   chegam (document.fonts.ready); sem o preload, o navegador só as descobre depois de
+   baixar e interpretar o CSS — uma ida e volta a mais com a cortina fechada. Lidas do
+   CSS que o index.html referencia, e não da pasta: o dist/ pode guardar bundles antigos. */
+const cssHref = page.match(/<link rel="stylesheet"[^>]*href="([^"]+\.css)"/)?.[1]
+if (!cssHref) fail('folha de estilo não encontrada no dist/index.html.')
+const css = readFileSync(join(DIST, cssHref), 'utf8')
+const fonts = [...new Set([...css.matchAll(/url\(["']?(\/assets\/[^"')]+\.woff2)["']?\)/g)].map((m) => m[1]))]
+const preloads = fonts.map((href) => `<link rel="preload" href="${href}" as="font" type="font/woff2" crossorigin>`)
+page = page.replace(/<link rel="stylesheet"/, () => `${preloads.join('\n    ')}\n    <link rel="stylesheet"`)
+
 /* 4. toda imagem citada no HTML tem de existir no dist (mesmos hashes) */
 const missing = [...html.matchAll(/\ssrc="(\/[^"]+)"/g)]
   .map((match) => match[1])
@@ -88,6 +99,7 @@ const words = html
   .filter(Boolean).length
 console.log(
   `${styleText('green', '✓ prerender')}    dist/index.html  (${words} palavras de conteúdo · ` +
-    `${(html.length / 1024).toFixed(0)} KB de HTML · JSON-LD de serviços e FAQ no <head>)`
+    `${(html.length / 1024).toFixed(0)} KB de HTML · JSON-LD de serviços e FAQ no <head> · ` +
+    `${fonts.length} fontes pré-carregadas)`
 )
 for (const warning of warnings) console.warn(styleText('yellow', `⚠ ${warning}`))

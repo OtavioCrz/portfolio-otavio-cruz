@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { gsap, useGSAP } from '../lib/gsap'
+import { gsap, reveal, useGSAP } from '../lib/gsap'
 import { useMediaQuery } from '../hooks/useMediaQuery'
 import { TEXT_OUTLINE } from '../lib/type'
 import { SERVICES, SERVICE_AREA } from '../data/services'
@@ -7,10 +7,12 @@ import { SERVICES, SERVICE_AREA } from '../data/services'
 /**
  * Serviços — lista vertical em tipografia gigante vazada.
  *
- * Hover (ou foco pelo teclado): o contorno preenche de neon e a descrição
- * desliza para fora. A abertura usa grid-template-rows 0fr → 1fr, que anima
- * até a altura real do texto sem medir nada em JS. Em telas de toque não há
- * hover, então as descrições já nascem abertas.
+ * Hover (ou foco pelo teclado): o contorno preenche de neon e a descrição, que já ocupa
+ * o seu lugar esmaecida, acende e sobe. O espaço fica reservado de propósito: a versão
+ * anterior abria a descrição por grid-template-rows (0fr → 1fr), o que recalculava o
+ * layout da página inteira a cada quadro do hover — e mudava a altura da página embaixo
+ * dos pins do ScrollTrigger. Agora o hover só mexe em opacity e translate, que o
+ * navegador anima no compositor. Em telas de toque (sem hover) a descrição já nasce acesa.
  *
  * Cada linha é um link de orçamento no WhatsApp com o serviço já escrito —
  * o que também a torna focável pelo teclado.
@@ -25,46 +27,32 @@ export default function Services() {
       const q = gsap.utils.selector(root)
       const list = q('[data-service-list]')[0]
 
-      gsap.from(q('[data-head]'), {
-        yPercent: 180,
-        duration: 1.05,
-        ease: 'power4.out',
-        stagger: 0.08,
-        scrollTrigger: { trigger: root.current, start: 'top 72%' },
-      })
-
-      gsap.from(q('[data-rule]'), {
-        scaleX: 0,
-        transformOrigin: '0% 50%',
-        duration: 1.2,
-        ease: 'power3.inOut',
-        stagger: 0.12,
-        scrollTrigger: { trigger: list, start: 'top 85%' },
-      })
-
-      gsap.from(q('[data-title]'), {
-        yPercent: 180,
-        duration: 1.1,
-        ease: 'power4.out',
-        stagger: 0.12,
-        scrollTrigger: { trigger: list, start: 'top 85%' },
-      })
-
-      gsap.from(q('[data-meta]'), {
-        opacity: 0,
-        y: 14,
-        duration: 0.8,
-        ease: 'power3.out',
-        stagger: 0.12,
-        delay: 0.3,
-        scrollTrigger: { trigger: list, start: 'top 85%' },
-      })
+      reveal(
+        q('[data-head]'),
+        { yPercent: 180, duration: 1.05, ease: 'power4.out', stagger: 0.08 },
+        { trigger: root.current, start: 'top 72%' }
+      )
+      reveal(
+        q('[data-rule]'),
+        { scaleX: 0, transformOrigin: '0% 50%', duration: 1.2, ease: 'power3.inOut', stagger: 0.12 },
+        { trigger: list, start: 'top 85%' }
+      )
+      reveal(
+        q('[data-title]'),
+        { yPercent: 180, duration: 1.1, ease: 'power4.out', stagger: 0.12 },
+        { trigger: list, start: 'top 85%' }
+      )
+      reveal(
+        q('[data-meta]'),
+        { opacity: 0, y: 14, duration: 0.8, ease: 'power3.out', stagger: 0.12, delay: 0.3 },
+        { trigger: list, start: 'top 85%' }
+      )
     },
     { scope: root, dependencies: [prefersReduced], revertOnUpdate: true }
   )
 
   return (
-    <section ref={root} id="servicos" className="relative z-10 bg-ink px-6 py-[16vh] md:px-[6vw]">
+    <section ref={root} id="servicos" className="relative z-10 px-6 py-[16vh] md:px-[6vw]">
       <div className="mb-[8vh] flex flex-wrap items-end justify-between gap-6">
         <div>
           <div className="line-mask">
@@ -130,13 +118,10 @@ export default function Services() {
                 </span>
               </div>
 
-              <div className="grid grid-rows-[0fr] transition-[grid-template-rows] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:grid-rows-[1fr] group-focus-visible:grid-rows-[1fr] [@media(hover:none)]:grid-rows-[1fr]">
-                <div className="overflow-hidden">
-                  <p className="max-w-[58ch] pt-6 font-mono text-[clamp(0.82rem,1vw,0.95rem)] leading-[1.8] text-bone/70 md:pl-[4.5rem]">
-                    {service.description}
-                  </p>
-                </div>
-              </div>
+              {/* Espaço sempre reservado: o hover só mexe em opacity e translate */}
+              <p className="max-w-[58ch] translate-y-2 pt-6 font-mono text-[clamp(0.82rem,1vw,0.95rem)] leading-[1.8] text-bone/70 opacity-35 transition-[opacity,translate] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100 md:pl-[4.5rem] [@media(hover:none)]:translate-y-0 [@media(hover:none)]:opacity-100">
+                {service.description}
+              </p>
             </a>
           </li>
         ))}

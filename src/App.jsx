@@ -13,6 +13,7 @@ import Projects from './components/Projects'
 import Testimonials from './components/Testimonials'
 import FAQ from './components/FAQ'
 import Footer from './components/Footer'
+import DiamondLayer from './components/DiamondLayer'
 
 export default function App() {
   const [ready, setReady] = useState(false)
@@ -49,11 +50,16 @@ export default function App() {
       <Preloader onComplete={handleReady} />
       <Nav ready={ready} />
 
+      {/* Palco 3D: canvas fixo em z-0, atrás do conteúdo. Só existe no cliente. */}
+      <DiamondLayer ready={ready} />
+
       {/* Trava rolagem horizontal acidental. `overflow-x-clip`, e não
           `overflow-x-hidden`: hidden força overflow-y: auto e transforma o
           wrapper num container de rolagem — isso quebra position: sticky e
-          pode confundir o pin do ScrollTrigger. clip só recorta. */}
-      <div className="overflow-x-clip">
+          pode confundir o pin do ScrollTrigger. clip só recorta.
+          `relative z-[1]` põe todo o conteúdo acima do canvas do diamante: as
+          seções não têm fundo próprio, então o palco aparece por trás delas. */}
+      <div className="relative z-[1] overflow-x-clip">
         <main>
           <HeroMask />
           <About />

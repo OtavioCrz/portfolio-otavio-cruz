@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { gsap, useGSAP } from '../lib/gsap'
+import { gsap, demote, promote, reveal, useGSAP } from '../lib/gsap'
 import MagneticButton from './MagneticButton'
 import { CONTACT } from '../data/projects'
 
@@ -12,7 +12,8 @@ const LINKS = [
   { label: 'E-mail', href: `mailto:${CONTACT.email}` },
 ]
 
-function useLocalClock() {
+/* Relógio isolado: só ele renderiza de novo a cada segundo, não o rodapé inteiro */
+function LocalClock() {
   const [time, setTime] = useState('')
   useEffect(() => {
     const tick = () => {
@@ -29,34 +30,49 @@ function useLocalClock() {
     const id = setInterval(tick, 1000)
     return () => clearInterval(id)
   }, [])
-  return time
+  return <span className="tabular-nums text-bone/70">{time}</span>
 }
 
 export default function Footer() {
   const root = useRef(null)
-  const time = useLocalClock()
 
   useGSAP(
     () => {
       const q = gsap.utils.selector(root)
+      const glowEl = q('[data-glow]')[0]
 
-      gsap.from(q('[data-reveal]'), {
-        yPercent: 180,
-        duration: 1.05,
-        ease: 'power4.out',
-        stagger: 0.08,
-        scrollTrigger: { trigger: root.current, start: 'top 78%' },
-      })
+      reveal(
+        q('[data-reveal]'),
+        { yPercent: 180, duration: 1.05, ease: 'power4.out', stagger: 0.08 },
+        { trigger: root.current, start: 'top 78%' }
+      )
 
-      /* brilho roxo que respira atrás do CTA */
-      gsap.to(q('[data-glow]'), {
+      /* Brilho roxo que respira atrás do CTA. Loop infinito: roda só com o rodapé na
+         tela, e com camada de GPU só enquanto respira. */
+      const glow = gsap.to(glowEl, {
         opacity: 0.55,
         scale: 1.12,
         duration: 3.4,
         ease: 'sine.inOut',
         repeat: -1,
         yoyo: true,
+        paused: true,
       })
+      const io = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting) {
+          promote(glowEl)
+          glow.play()
+        } else {
+          glow.pause()
+          demote(glowEl)
+        }
+      })
+      io.observe(root.current)
+
+      return () => {
+        io.disconnect()
+        demote(glowEl)
+      }
     },
     { scope: root }
   )
@@ -65,13 +81,16 @@ export default function Footer() {
     <footer
       ref={root}
       id="contato"
-      className="relative z-10 overflow-hidden border-t border-bone/12 bg-ink px-6 md:px-[6vw] pb-[6vh] pt-[16vh]"
+      className="relative z-10 flex min-h-svh flex-col justify-between overflow-hidden border-t border-bone/12 bg-ink px-6 md:px-[6vw] pb-[6vh] pt-[16vh]"
     >
-      {/* halo de fundo */}
+      {/* Halo de fundo: gradiente radial (.footer-glow, index.css), e não um disco com
+          blur(120px). Na tela é o mesmo brilho difuso, mas o desfoque era refeito a cada
+          quadro do respiro — o filtro mais caro que há, numa área de meia tela. O
+          gradiente é rasterizado uma vez; o respiro vira só composição. */}
       <div
         data-glow
         aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-1/3 -z-0 h-[70vh] w-[70vh] -translate-x-1/2 rounded-full bg-neon/25 opacity-25 blur-[120px]"
+        className="footer-glow pointer-events-none absolute left-1/2 -z-0 -translate-x-1/2 opacity-25"
       />
 
       <div className="relative flex flex-col items-center text-center">
@@ -124,7 +143,7 @@ export default function Footer() {
         </nav>
 
         <span className="type-eyebrow text-ash">
-          Fortaleza, BR — <span className="tabular-nums text-bone/70">{time}</span>
+          Fortaleza, BR — <LocalClock />
         </span>
       </div>
     </footer>

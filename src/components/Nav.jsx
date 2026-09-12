@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { gsap, useGSAP } from '../lib/gsap'
+import { gsap, demote, promote, useGSAP } from '../lib/gsap'
+import { setStageHidden } from '../lib/stage'
 import { useMediaQuery } from '../hooks/useMediaQuery'
 import { CONTACT } from '../data/projects'
 
@@ -54,8 +55,18 @@ export default function Nav({ ready }) {
   useGSAP(
     () => {
       const q = gsap.utils.selector(overlay)
+      /* Camada de GPU só enquanto a cortina anda. Aberto e parado, o menu cobre a
+         tela inteira — e o palco 3D atrás dele não precisa renderizar. */
       menuTl.current = gsap
-        .timeline({ paused: true })
+        .timeline({
+          paused: true,
+          onStart: () => promote(overlay.current),
+          onComplete: () => {
+            demote(overlay.current)
+            setStageHidden('menu', true)
+          },
+          onReverseComplete: () => demote(overlay.current),
+        })
         .fromTo(
           overlay.current,
           { autoAlpha: 0, yPercent: -100 },
@@ -71,6 +82,7 @@ export default function Nav({ ready }) {
 
       return () => {
         menuTl.current = null
+        setStageHidden('menu', false)
       }
     },
     { scope: overlay }
@@ -79,9 +91,13 @@ export default function Nav({ ready }) {
   useEffect(() => {
     const tl = menuTl.current
     if (!tl) return
+    if (!open) setStageHidden('menu', false)
     if (prefersReduced) tl.progress(open ? 1 : 0).pause()
     else if (open) tl.timeScale(1).play()
-    else tl.timeScale(1.5).reverse()
+    else {
+      if (tl.progress() > 0) promote(overlay.current)
+      tl.timeScale(1.5).reverse()
+    }
   }, [open, prefersReduced])
 
   /* aberto: trava a rolagem, isola a página, foca o primeiro link, Esc fecha */
@@ -160,7 +176,10 @@ export default function Nav({ ready }) {
         <div data-menu-meta className="flex items-end justify-between gap-6">
           <span className="flex items-center gap-2.5">
             <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-neon opacity-75" />
+              {/* o pulso é um loop infinito: só existe com o menu aberto */}
+              {open && (
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-neon opacity-75" />
+              )}
               <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-neon" />
             </span>
             <span className="type-eyebrow text-bone/85">Disponível para projetos</span>

@@ -1,5 +1,6 @@
 import { useRef } from 'react'
-import { gsap, useGSAP } from '../lib/gsap'
+import { gsap, demote, promote, useGSAP } from '../lib/gsap'
+import { setStageHidden } from '../lib/stage'
 import { useMediaQuery } from '../hooks/useMediaQuery'
 import { HERO_FRAMES, FRAME_DURATION } from '../data/media'
 import Manifesto from './Manifesto'
@@ -32,6 +33,8 @@ const CLIP_OPEN = { '--clip-y': '0%', '--clip-x': '0%' }
 const CLIP_CLOSED_DESKTOP = { '--clip-y': '19.5%', '--clip-x': '44%' }
 /* Faixa horizontal entre as palavras empilhadas (mobile) -> 88vw x 23vh */
 const CLIP_CLOSED_MOBILE = { '--clip-y': '38.5%', '--clip-x': '6%' }
+/* Instante da timeline mestre em que a fresta termina de abrir e a mídia cobre a tela */
+const MASK_OPEN_AT = 0.56
 
 export default function HeroMask() {
   const root = useRef(null)
@@ -73,6 +76,35 @@ export default function HeroMask() {
       /* tween vazio apenas para dar duração ao último frame */
       sequence.to({}, { duration: FRAME_DURATION }, (frames.length - 1) * FRAME_DURATION)
 
+      /* -- Só com o hero na tela ------------------------------
+         Stop-motion e pulso são loops infinitos: sem isto, seguiam trocando
+         quadros e escrevendo estilo a cada frame até o fim da visita. E a
+         mídia e as palavras — o que o primeiro gesto de scroll move — só têm
+         camada de GPU enquanto o hero aparece. O véu e o manifesto, não: eles
+         se movem com a mídia já cobrindo a tela, e o GSAP os promove só durante
+         os próprios tweens. Camada a mais custa composição em todo quadro em
+         que algo na tela muda — o diamante, por exemplo. */
+      const layers = [media, wordL, wordR]
+      let pulse = null
+      let visible = true
+      let scrolled = 0
+      const syncLoops = () => {
+        sequence.paused(!visible)
+        pulse?.paused(!visible || scrolled > 0.05)
+      }
+      const io = new IntersectionObserver(([entry]) => {
+        visible = entry.isIntersecting
+        if (visible && !prefersReduced) promote(layers)
+        else demote(layers)
+        syncLoops()
+      })
+      io.observe(root.current)
+      const cleanup = () => {
+        io.disconnect()
+        demote(layers)
+        setStageHidden('hero', false)
+      }
+
       /* -- Rota acessível: sem pin, sem scrub ----------------- */
       if (prefersReduced) {
         gsap.set(mask, CLIP_OPEN)
@@ -82,19 +114,29 @@ export default function HeroMask() {
         gsap.set([wordL, wordR, hint], { autoAlpha: 0 })
         gsap.set(ring, { opacity: 0 })
         sequence.timeScale(0.3)
-        return
+        return cleanup
       }
 
       /* -- Pulso do indicador de scroll ----------------------- */
-      gsap.fromTo(
+      pulse = gsap.fromTo(
         hintLine,
         { scaleY: 0.12, transformOrigin: '50% 0%' },
         { scaleY: 1, duration: 1.35, ease: 'power2.inOut', repeat: -1, yoyo: true }
       )
 
+      /* A mídia aberta cobre a tela inteira, e com ela o palco 3D, que fica
+         atrás do conteúdo: com o hero fixo e a fresta toda aberta, o diamante
+         não renderiza. Decide pelo tempo DA TIMELINE, que o scrub atrasa em
+         relação ao scroll — é o que está de fato na tela. */
+      const syncStage = (tl) =>
+        setStageHidden('hero', tl.scrollTrigger?.isActive === true && tl.time() >= MASK_OPEN_AT)
+
       /* -- Timeline mestre (pinada + scrub) ------------------- */
       const master = gsap.timeline({
         defaults: { ease: 'none' },
+        onUpdate() {
+          syncStage(this)
+        },
         scrollTrigger: {
           trigger: root.current,
           start: 'top top',
@@ -104,9 +146,12 @@ export default function HeroMask() {
           anticipatePin: 1,
           scrub: 0.85,
           invalidateOnRefresh: true,
+          onToggle: (self) => syncStage(self.animation),
           onUpdate: (self) => {
             /* o stop-motion desacelera conforme a mídia toma a tela */
             sequence.timeScale(1 - self.progress * 0.78)
+            scrolled = self.progress
+            syncLoops()
           },
         },
       })
@@ -146,7 +191,7 @@ export default function HeroMask() {
         .fromTo(
           mask,
           { ...clipClosed },
-          { ...CLIP_OPEN, duration: 0.56, ease: 'power2.inOut', immediateRender: true },
+          { ...CLIP_OPEN, duration: MASK_OPEN_AT, ease: 'power2.inOut', immediateRender: true },
           0
         )
         .fromTo(
@@ -179,15 +224,23 @@ export default function HeroMask() {
 
         /* 5 - respiro antes de soltar o pin */
         .to({}, { duration: 0.16 })
+
+      return cleanup
     },
     { scope: root, dependencies: [isDesktop, prefersReduced], revertOnUpdate: true }
   )
 
   return (
-    <section ref={root} id="hero" className="relative h-svh w-full overflow-hidden bg-ink">
+    <section ref={root} id="hero" className="relative h-svh w-full overflow-hidden">
       {/* -- CAMADA 1 - mídia recortada pela fresta ------------ */}
       <div data-mask className="hero-mask absolute inset-0 z-10">
-        <div data-media className="absolute inset-0 gpu">
+        <div data-media className="absolute inset-0">
+          {/* Primeiro fold: nada de lazy. Só o 1º quadro ganha prioridade alta
+              (é o que aparece na fresta quando o preloader sai); os outros sete
+              vêm na prioridade normal, sem disputar banda com as fontes, que
+              são o que segura o preloader. Decodificação assíncrona em todos,
+              inclusive no 1º: com `sync`, a primeira pintura da página — a do
+              preloader, que cobre o hero — esperava a rasterização do SVG. */}
           {HERO_FRAMES.map((frame, i) => (
             <img
               key={frame.id}
@@ -197,7 +250,8 @@ export default function HeroMask() {
               aria-hidden="true"
               draggable="false"
               loading="eager"
-              decoding={i === 0 ? 'sync' : 'async'}
+              fetchPriority={i === 0 ? 'high' : undefined}
+              decoding="async"
               className="absolute inset-0 h-full w-full object-cover"
             />
           ))}
@@ -237,7 +291,7 @@ export default function HeroMask() {
           <span
             data-word="left"
             aria-hidden="true"
-            className="gpu block w-full text-center md:w-auto md:flex-1 md:text-right"
+            className="block w-full text-center md:w-auto md:flex-1 md:text-right"
           >
             OTÁVIO
           </span>
@@ -251,7 +305,7 @@ export default function HeroMask() {
           <span
             data-word="right"
             aria-hidden="true"
-            className="gpu block w-full text-center md:w-auto md:flex-1 md:text-left"
+            className="block w-full text-center md:w-auto md:flex-1 md:text-left"
           >
             CRUZ
           </span>

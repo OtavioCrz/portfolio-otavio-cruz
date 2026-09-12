@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { gsap, ScrollTrigger, useGSAP } from '../lib/gsap'
+import { gsap, reveal, ScrollTrigger, useGSAP, whileActive } from '../lib/gsap'
 import { useMediaQuery } from '../hooks/useMediaQuery'
 import { TEXT_OUTLINE } from '../lib/type'
 import { PROFILE, STACK } from '../data/profile'
@@ -47,51 +47,48 @@ export default function About() {
       }
 
       /* cortina recolhe para baixo: o rosto aparece primeiro */
-      gsap.fromTo(
+      gsap.set(curtain, { transformOrigin: '50% 100%' })
+      reveal(
         curtain,
-        { scaleY: 1, transformOrigin: '50% 100%' },
-        {
-          scaleY: 0,
-          duration: 1.3,
-          ease: 'expo.inOut',
-          scrollTrigger: { trigger: photo, start: 'top 78%' },
-        }
+        { scaleY: 0, duration: 1.3, ease: 'expo.inOut' },
+        { trigger: photo, start: 'top 78%', method: 'to' }
       )
 
       /* A moldura interna tem 120% da altura e começa 10% acima:
-         ±7% de yPercent (±8.4% do container) nunca expõe a borda. */
+         ±7% de yPercent (±8.4% do container) nunca expõe a borda.
+         Camada de GPU só enquanto a foto está na tela. */
       gsap.fromTo(
         parallax,
         { yPercent: -7 },
         {
           yPercent: 7,
           ease: 'none',
-          scrollTrigger: { trigger: photo, start: 'top bottom', end: 'bottom top', scrub: true },
+          scrollTrigger: {
+            trigger: photo,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
+            onToggle: whileActive(parallax),
+          },
         }
       )
 
-      gsap.from(q('[data-reveal]'), {
-        yPercent: 180,
-        duration: 1.05,
-        ease: 'power4.out',
-        stagger: 0.07,
-        scrollTrigger: { trigger: q('[data-copy]')[0], start: 'top 75%' },
-      })
-
-      gsap.from(q('[data-principle]'), {
-        opacity: 0,
-        x: -24,
-        duration: 0.8,
-        ease: 'power3.out',
-        stagger: 0.08,
-        scrollTrigger: { trigger: q('[data-principles]')[0], start: 'top 88%' },
-      })
+      reveal(
+        q('[data-reveal]'),
+        { yPercent: 180, duration: 1.05, ease: 'power4.out', stagger: 0.07 },
+        { trigger: q('[data-copy]')[0], start: 'top 75%' }
+      )
+      reveal(
+        q('[data-principle]'),
+        { opacity: 0, x: -24, duration: 0.8, ease: 'power3.out', stagger: 0.08 },
+        { trigger: q('[data-principles]')[0], start: 'top 88%' }
+      )
     },
     { scope: root, dependencies: [canHover, prefersReduced], revertOnUpdate: true }
   )
 
   return (
-    <section ref={root} id="perfil" className="relative z-10 bg-ink">
+    <section ref={root} id="perfil" className="relative z-10">
       <div className="grid grid-cols-1 gap-[8vh] px-6 md:px-[6vw] pb-[14vh] pt-[18vh] md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-[5vw]">
         {/* -- Foto ----------------------------------------------- */}
         <figure>

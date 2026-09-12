@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { gsap, useGSAP } from '../lib/gsap'
+import { gsap, demote, promote, reveal, useGSAP } from '../lib/gsap'
 import { useMediaQuery } from '../hooks/useMediaQuery'
 import { PROJECTS } from '../data/projects'
 
@@ -38,22 +38,16 @@ export default function Projects() {
       const q = gsap.utils.selector(root)
 
       /* -- Reveal das linhas ao entrar na viewport ------------ */
-      gsap.from(q('[data-reveal]'), {
-        yPercent: 180,
-        duration: 1,
-        ease: 'power4.out',
-        stagger: 0.08,
-        scrollTrigger: { trigger: root.current, start: 'top 72%' },
-      })
-
-      gsap.from(q('[data-rule]'), {
-        scaleX: 0,
-        transformOrigin: '0% 50%',
-        duration: 1.1,
-        ease: 'power3.inOut',
-        stagger: 0.08,
-        scrollTrigger: { trigger: root.current, start: 'top 72%' },
-      })
+      reveal(
+        q('[data-reveal]'),
+        { yPercent: 180, duration: 1, ease: 'power4.out', stagger: 0.08 },
+        { trigger: root.current, start: 'top 72%' }
+      )
+      reveal(
+        q('[data-rule]'),
+        { scaleX: 0, transformOrigin: '0% 50%', duration: 1.1, ease: 'power3.inOut', stagger: 0.08 },
+        { trigger: root.current, start: 'top 72%' }
+      )
 
       /* -- Hover reveal (somente desktop com mouse) ----------- */
       if (!isDesktop) return
@@ -77,20 +71,42 @@ export default function Projects() {
 
       const cleanups = rows.map((row, i) => {
         const title = row.querySelector('[data-title]')
+        const fill = row.querySelector('[data-title-fill]')
         const arrow = row.querySelector('[data-arrow]')
+        const layers = [title, fill, arrow]
         gsap.set(arrow, { x: -24 })
 
+        /* Só transform e opacity. O título não troca de `color` (repintaria o texto a
+           cada quadro): a cópia neon por cima cruza a opacidade. As camadas de GPU entram
+           no hover e saem quando a saída termina; `overwrite` mata a animação oposta, para
+           um onComplete antigo não rebaixar as camadas de um hover novo. */
         const onEnter = () => {
-          gsap.to(preview, { autoAlpha: 1, scale: 1, duration: 0.5, ease: 'power3.out' })
+          promote([preview, ...layers])
+          gsap.to(preview, { autoAlpha: 1, scale: 1, duration: 0.5, ease: 'power3.out', overwrite: 'auto' })
           gsap.to(images, { autoAlpha: 0, duration: 0.2 })
           gsap.to(images[i], { autoAlpha: 1, duration: 0.35 })
-          gsap.to(title, { x: 28, color: '#A855F7', duration: 0.55, ease: 'power3.out' })
-          gsap.to(arrow, { autoAlpha: 1, x: 0, duration: 0.5, ease: 'power3.out' })
+          gsap.to(title, { x: 28, duration: 0.55, ease: 'power3.out', overwrite: 'auto' })
+          gsap.to(fill, { autoAlpha: 1, duration: 0.55, ease: 'power3.out', overwrite: 'auto' })
+          gsap.to(arrow, { autoAlpha: 1, x: 0, duration: 0.5, ease: 'power3.out', overwrite: 'auto' })
         }
         const onLeave = () => {
-          gsap.to(preview, { autoAlpha: 0, scale: 0.86, duration: 0.4, ease: 'power3.out' })
-          gsap.to(title, { x: 0, color: '#F2F0EA', duration: 0.55, ease: 'power3.out' })
-          gsap.to(arrow, { autoAlpha: 0, x: -24, duration: 0.4, ease: 'power3.out' })
+          gsap.to(preview, {
+            autoAlpha: 0,
+            scale: 0.86,
+            duration: 0.4,
+            ease: 'power3.out',
+            overwrite: 'auto',
+            onComplete: () => demote(preview),
+          })
+          gsap.to(title, { x: 0, duration: 0.55, ease: 'power3.out', overwrite: 'auto' })
+          gsap.to(fill, {
+            autoAlpha: 0,
+            duration: 0.55,
+            ease: 'power3.out',
+            overwrite: 'auto',
+            onComplete: () => demote(layers),
+          })
+          gsap.to(arrow, { autoAlpha: 0, x: -24, duration: 0.4, ease: 'power3.out', overwrite: 'auto' })
         }
 
         row.addEventListener('pointerenter', onEnter)
@@ -113,7 +129,7 @@ export default function Projects() {
     <section
       ref={root}
       id="work"
-      className="relative z-10 bg-ink px-6 md:px-[6vw] py-[16vh]"
+      className="relative z-10 px-6 md:px-[6vw] py-[16vh]"
     >
       {/* Cabeçalho */}
       <div className="mb-[9vh] flex flex-wrap items-end justify-between gap-6">
@@ -178,9 +194,16 @@ export default function Projects() {
                     <span
                       data-title
                       data-reveal
-                      className="type-brutal block whitespace-normal text-[clamp(1.35rem,4.6vw,4.6rem)] text-bone md:whitespace-nowrap"
+                      className="type-brutal relative block whitespace-normal text-[clamp(1.35rem,4.6vw,4.6rem)] text-bone md:whitespace-nowrap"
                     >
                       {project.title}
+                      {/* Cópia neon para o hover — só no desktop e só no cliente: fora
+                          do HTML pré-renderizado, onde os robôs leriam o título duas vezes */}
+                      {isDesktop && (
+                        <span data-title-fill aria-hidden="true" className="absolute inset-0 text-neon opacity-0">
+                          {project.title}
+                        </span>
+                      )}
                     </span>
                   </span>
                 </span>

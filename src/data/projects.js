@@ -1,9 +1,12 @@
-import coverMariaPitanga from '../assets/work/Maria-Pitanga-Oficial.png'
-import coverUnimais from '../assets/work/UNIMAIS.png'
-import coverMariaPitangaPT from '../assets/work/Maria-Pitanga-Portugal.png'
+import coverMariaPitanga from '../assets/work/Maria-Pitanga-Oficial.webp'
+import coverUnimais from '../assets/work/UNIMAIS.webp'
+import coverMariaPitangaPT from '../assets/work/Maria-Pitanga-Portugal.webp'
 
-/* Capas: screenshots de ~1904x944 (≈ 2:1). `coverWidth`/`coverHeight` são
-   as dimensões reais de cada arquivo — reservam o espaço antes do load. */
+/* Capas: WebP de 1200px de largura (≈ 2:1), gerados a partir dos PNGs de ~1904px
+   que ficam na mesma pasta como originais. 1200px cobrem a maior exibição — a capa
+   do celular a 3x de densidade — e as três pesam 223 KB, contra 3,9 MB em PNG.
+   `coverWidth`/`coverHeight` são as dimensões reais de cada arquivo — reservam o
+   espaço antes do load. */
 export const PROJECTS = [
   {
     id: 'maria-pitanga',
@@ -14,8 +17,8 @@ export const PROJECTS = [
     stack: ['HTML', 'CSS', 'JavaScript'],
     href: 'https://otaviocrz.github.io/Site-Maria-Pitanga/',
     cover: coverMariaPitanga,
-    coverWidth: 1905,
-    coverHeight: 945,
+    coverWidth: 1200,
+    coverHeight: 595,
   },
   {
     id: 'unimais',
@@ -26,8 +29,8 @@ export const PROJECTS = [
     stack: ['Landing Page', 'CRO', 'Responsivo'],
     href: 'https://otaviocrz.github.io/Landing-Page-Unimais/',
     cover: coverUnimais,
-    coverWidth: 1904,
-    coverHeight: 943,
+    coverWidth: 1200,
+    coverHeight: 594,
   },
   {
     id: 'maria-pitanga-pt',
@@ -38,8 +41,8 @@ export const PROJECTS = [
     stack: ['Web Design', 'i18n', 'Performance'],
     href: 'https://mariapitangaacaiteria.pt/',
     cover: coverMariaPitangaPT,
-    coverWidth: 1903,
-    coverHeight: 944,
+    coverWidth: 1200,
+    coverHeight: 595,
   },
 ]
 

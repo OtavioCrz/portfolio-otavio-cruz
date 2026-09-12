@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { gsap, useGSAP } from '../lib/gsap'
+import { gsap, demote, promote, useGSAP } from '../lib/gsap'
 
 /**
  * Cortina de entrada.
@@ -38,9 +38,14 @@ export default function Preloader({ onComplete }) {
         .to(bar, { scaleX: 1, duration: 1.5, ease: 'power2.inOut' }, 0)
         .from(brand, { yPercent: 180, duration: 0.9, ease: 'power4.out', stagger: 0.06 }, 0.1)
 
+      /* a cortina de tela cheia sobe com yPercent: camada de GPU só durante a subida */
       const outro = gsap.timeline({
         paused: true,
-        onComplete: () => onComplete?.(),
+        onStart: () => promote(root.current),
+        onComplete: () => {
+          demote(root.current)
+          onComplete?.()
+        },
       })
       outro
         .to(brand, { yPercent: -180, duration: 0.7, ease: 'power3.inOut', stagger: 0.05 })

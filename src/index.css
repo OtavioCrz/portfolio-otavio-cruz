@@ -251,10 +251,44 @@
     }
   }
 
-  .gpu {
-    will-change: transform;
-    transform: translateZ(0);
-    backface-visibility: hidden;
+  /* Letreiro (Marquee.jsx): anda até -50%, onde a 2ª cópia ocupa o lugar da
+     1ª e o loop recomeça sem emenda. Animação CSS de transform roda no
+     compositor, fora da thread principal. Nasce pausada; o componente a solta
+     enquanto o letreiro está na tela. */
+  @keyframes marquee {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+
+  .marquee-track {
+    animation: marquee var(--marquee-duration, 26s) linear infinite;
+    animation-play-state: paused;
+  }
+
+  [data-running="true"] > .marquee-track {
+    animation-play-state: running;
+  }
+
+  /* Halo do rodapé: o equivalente, sem filtro, a um disco neon de raio 35vh
+     com blur(120px) — a versão anterior, que refazia o desfoque a cada quadro
+     do respiro. As paradas seguem o perfil do desfoque (σ = 120px): ~97% no
+     centro, metade na borda do disco, ~2% dois desvios além dela. */
+  .footer-glow {
+    top: calc(33.333% - 240px);
+    width: calc(70vh + 480px);
+    height: calc(70vh + 480px);
+    background: radial-gradient(
+      closest-side,
+      rgb(168 85 247 / 0.242),
+      rgb(168 85 247 / 0.205) calc(35vh - 120px),
+      rgb(168 85 247 / 0.12) 35vh,
+      rgb(168 85 247 / 0.037) calc(35vh + 120px),
+      transparent calc(35vh + 240px)
+    );
   }
 
   /* Esconde até o preloader liberar (evita flash de conteúdo) */

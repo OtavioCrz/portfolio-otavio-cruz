@@ -1,5 +1,5 @@
 import { Fragment, useRef } from 'react'
-import { gsap, useGSAP } from '../lib/gsap'
+import { gsap, useGSAP, whileActive } from '../lib/gsap'
 import { useMediaQuery } from '../hooks/useMediaQuery'
 import { TESTIMONIALS } from '../data/testimonials'
 
@@ -51,6 +51,9 @@ export default function Testimonials() {
           scrub: 0.8,
           anticipatePin: 1,
           invalidateOnRefresh: true,
+          /* os depoimentos trocam de lugar com transform e opacity durante o pin:
+             camada de GPU só enquanto ele dura */
+          onToggle: whileActive(quotes),
         },
       })
 
@@ -90,7 +93,7 @@ export default function Testimonials() {
       ref={root}
       id="depoimentos"
       aria-label="Depoimentos"
-      className="relative z-10 flex flex-col justify-between gap-[6vh] overflow-hidden bg-ink px-6 py-[14vh] md:px-[6vw] motion-safe:h-svh"
+      className="relative z-10 flex flex-col justify-between gap-[6vh] overflow-hidden px-6 py-[14vh] md:px-[6vw] motion-safe:h-svh"
     >
       <div className="flex items-center justify-between">
         <span className="type-eyebrow text-neon">Depoimentos — 005</span>

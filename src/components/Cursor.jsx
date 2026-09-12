@@ -1,21 +1,17 @@
 import { useEffect, useRef } from 'react'
-import { gsap, useGSAP } from '../lib/gsap'
+import { gsap, demote, promote, useGSAP } from '../lib/gsap'
 import { useMediaQuery } from '../hooks/useMediaQuery'
 
 const HOVER_TARGETS = '[data-cursor="hover"], a, button'
 
-const REST = {
-  ring: { scale: 1, borderColor: 'rgba(242,240,234,0.65)' },
-  dot: { scale: 1 },
-}
-const ACTIVE = {
-  ring: { scale: 2.1, borderColor: 'rgba(168,85,247,0.95)' },
-  dot: { scale: 0.2 },
-}
-
 /**
  * Cursor customizado: um ponto que acompanha 1:1 e um anel com atraso,
  * em mix-blend-difference.
+ *
+ * Só transform e opacity. O anel tem duas bordas empilhadas, marfim e neon, e
+ * o hover cruza a opacidade delas — em vez de animar `border-color`, que
+ * repinta a cada quadro. Ponto e anel ganham camada de GPU enquanto o cursor
+ * está visível: eles se movem a cada mousemove.
  *
  * Visibilidade e estado de hover são DERIVADOS a cada mousemove, nunca
  * memorizados a partir de eventos de entrada/saída isolados. É isso que
@@ -37,6 +33,8 @@ export default function Cursor() {
 
       const dot = root.current.querySelector('[data-dot]')
       const ring = root.current.querySelector('[data-ring]')
+      const idle = ring.querySelector('[data-ring-idle]')
+      const hot = ring.querySelector('[data-ring-hot]')
 
       gsap.set([dot, ring], { xPercent: -50, yPercent: -50, autoAlpha: 0 })
 
@@ -51,15 +49,23 @@ export default function Cursor() {
       const setVisible = (next) => {
         if (next === visible) return
         visible = next
-        gsap.to([dot, ring], { autoAlpha: next ? 1 : 0, duration: 0.25, overwrite: 'auto' })
+        if (next) promote([dot, ring])
+        gsap.to([dot, ring], {
+          autoAlpha: next ? 1 : 0,
+          duration: 0.25,
+          overwrite: 'auto',
+          onComplete: next ? undefined : () => demote([dot, ring]),
+        })
       }
 
       const setHovering = (next) => {
         if (next === hovering) return
         hovering = next
-        const state = next ? ACTIVE : REST
-        gsap.to(ring, { ...state.ring, duration: 0.4, ease: 'power3.out', overwrite: 'auto' })
-        gsap.to(dot, { ...state.dot, duration: 0.4, ease: 'power3.out', overwrite: 'auto' })
+        const motion = { duration: 0.4, ease: 'power3.out', overwrite: 'auto' }
+        gsap.to(ring, { scale: next ? 2.1 : 1, ...motion })
+        gsap.to(hot, { opacity: next ? 1 : 0, ...motion })
+        gsap.to(idle, { opacity: next ? 0 : 1, ...motion })
+        gsap.to(dot, { scale: next ? 0.2 : 1, ...motion })
       }
 
       controls.current = {
@@ -78,6 +84,7 @@ export default function Cursor() {
 
       return () => {
         controls.current = null
+        demote([dot, ring])
       }
     },
     { scope: root, dependencies: [canHover], revertOnUpdate: true }
@@ -121,10 +128,10 @@ export default function Cursor() {
         data-dot
         className="fixed left-0 top-0 block h-1.5 w-1.5 rounded-full bg-bone"
       />
-      <span
-        data-ring
-        className="fixed left-0 top-0 block h-9 w-9 rounded-full border border-bone/65"
-      />
+      <span data-ring className="fixed left-0 top-0 block h-9 w-9">
+        <span data-ring-idle className="absolute inset-0 rounded-full border border-bone/65" />
+        <span data-ring-hot className="absolute inset-0 rounded-full border border-neon/95 opacity-0" />
+      </span>
     </div>
   )
 }
