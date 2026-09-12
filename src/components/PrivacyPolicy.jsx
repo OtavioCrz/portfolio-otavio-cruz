@@ -221,6 +221,8 @@ export default function PrivacyPolicy({ open, onClose, onExited }) {
                 Privacidade
               </span>
             </span>
+            {/* espaço entre as linhas: não aparece (são blocos), mas o leitor de tela lê
+                "Privacidade e cookies", e não "Privacidadee cookies" */}{' '}
             <span className="line-mask">
               <span data-title-line className="block">
                 e cookies<span className="text-neon">.</span>
