@@ -33,8 +33,30 @@ export const SERVICES = [
     cta: whatsapp('Olá, Otávio! Quero um orçamento de site institucional.'),
   },
   {
-    id: 'performance-seo',
+    id: 'sistemas-crm',
     index: '03',
+    name: 'Sistemas Internos e CRM sob Medida',
+    display: 'Sistemas & CRM',
+    qualifier: 'sob medida, do dado à decisão',
+    serviceType: 'Desenvolvimento de sistema web sob medida',
+    description:
+      'O painel que a sua equipe abre todo dia: dados de várias fontes num lugar só, acesso por perfil, relatórios que fecham com a realidade e integrações que tiram trabalho manual da frente — de WhatsApp oficial a importação de planilhas.',
+    cta: whatsapp('Olá, Otávio! Quero um orçamento de sistema ou CRM sob medida.'),
+  },
+  {
+    id: 'aplicativos',
+    index: '04',
+    name: 'Aplicativos iOS e Android',
+    display: 'Aplicativos',
+    qualifier: 'iOS e Android',
+    serviceType: 'Desenvolvimento de aplicativo mobile',
+    description:
+      'Aplicativo com a cara da sua marca, feito para o trabalho de campo: dados em tempo real, mapa, notificações e permissão por perfil. Da primeira tela à publicação nas lojas — e ao acompanhamento depois do lançamento.',
+    cta: whatsapp('Olá, Otávio! Quero um orçamento de aplicativo.'),
+  },
+  {
+    id: 'performance-seo',
+    index: '05',
     name: 'Otimização de Performance e SEO',
     display: 'Performance & SEO',
     qualifier: 'otimização técnica',

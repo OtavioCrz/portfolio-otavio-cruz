@@ -150,7 +150,7 @@ export default function Projects() {
         </div>
         <div className="line-mask">
           <p data-reveal className="block max-w-[34ch] font-mono text-xs leading-relaxed text-ash">
-            Três projetos em produção. Passe o cursor para ver.
+            Sites, sistemas e apps sob medida. Passe o cursor para ver.
           </p>
         </div>
       </div>
@@ -167,7 +167,7 @@ export default function Projects() {
               target="_blank"
               rel="noopener noreferrer"
               className="group relative block py-[6vw] md:py-[2.6vw]"
-              aria-label={`${project.title} — ${project.role} (abre em nova aba)`}
+              aria-label={`${project.title} — ${project.role}${project.access ? ` · ${project.access}` : ""} (abre em nova aba)`}
             >
               {/* O título ocupa a linha inteira; a função e o ano descem
                   para uma segunda linha. É o que permite manter a escala
@@ -213,8 +213,15 @@ export default function Projects() {
                 </span>
               </div>
 
-              <div className="mt-3 flex pl-[calc(2rem+1.25rem)] md:mt-4 md:pl-[calc(2.5rem+2rem)]">
+              <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 pl-[calc(2rem+1.25rem)] md:mt-4 md:pl-[calc(2.5rem+2rem)]">
                 <span className="type-eyebrow text-ash">{project.role}</span>
+                {/* sistema interno e app não abrem para qualquer um: a etiqueta
+                    diz o que esperar antes do clique */}
+                {project.access && (
+                  <span className="type-eyebrow border border-bone/20 px-2.5 py-1 text-bone/55">
+                    {project.access}
+                  </span>
+                )}
               </div>
 
               {/* Capa embutida — mobile. Mesma proporção do arquivo: sem corte. */}

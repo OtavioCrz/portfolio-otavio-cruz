@@ -187,7 +187,7 @@ qualquer mudança e não mostra nada.
 
 **Carregamento**
 
-- Capas da vitrine em WebP de 1200px: 223 KB, contra 3,9 MB em PNG.
+- Capas da vitrine em WebP de 1200px: as cinco somam 313 KB, contra 5,1 MB em PNG.
 - Fontes pré-carregadas pelo `prerender.mjs` — o preloader espera por elas.
 - Hero: só o 1º quadro com `fetchpriority="high"`, e todos com `decoding="async"` — com `sync`,
   a primeira pintura (a do preloader, que cobre o hero) esperava a rasterização do SVG. As
@@ -304,11 +304,18 @@ com as dimensões reais de cada arquivo (`coverWidth` / `coverHeight`). A caixa 
 proporção das capas (~2:1) e medidas em pixel par, então a imagem para no lugar nítida e sem
 distorção. As capas da prévia só são baixadas quando a vitrine chega perto da tela.
 
-As capas publicadas são **WebP de 1200px de largura** (as três somam 223 KB); os PNGs originais
-(3,9 MB) ficam na pasta, mas não são importados. 1200px cobrem a maior exibição — a capa do
-celular em tela 3x. Para trocar uma capa, exporte o WebP nessa largura (qualidade ~85, no
-[Squoosh](https://squoosh.app) ou com `cwebp -q 86 -resize 1200 0`) e atualize as dimensões no
-`projects.js`.
+As capas publicadas são **WebP de 1200px de largura** (as cinco somam 313 KB); os prints
+originais (5,1 MB) ficam na pasta, mas não são importados. 1200px cobrem a maior exibição — a
+capa do celular em tela 3x. Para trocar uma capa, exporte o WebP nessa largura (qualidade ~85,
+no [Squoosh](https://squoosh.app) ou com `cwebp -q 86 -resize 1200 0`) e atualize as dimensões
+no `projects.js`. Capa de app é uma composição: duas telas lado a lado sobre fundo escuro, no
+mesmo 1200×595 das outras.
+
+Projeto **sem link público** — um sistema interno, um app que ainda não está nas lojas — usa o
+campo opcional `access` do `projects.js` ("Acesso restrito", "Demonstração a pedido"). Ele vira
+uma etiqueta ao lado da função e entra no rótulo de acessibilidade do link, para ninguém clicar
+esperando outra coisa; o `href` aponta para a tela de entrada do sistema ou para a conversa no
+WhatsApp.
 
 ---
 

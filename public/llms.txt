@@ -1,6 +1,6 @@
 # Otávio Cruz — Desenvolvedor Front-End & Web Designer
 
-> Desenvolvedor front-end e web designer baseado em Fortaleza (Brasil). Cria landing pages de alta conversão e sites institucionais premium, e faz otimização de performance e SEO técnico para empresas de qualquer nicho no Brasil e em Portugal.
+> Desenvolvedor front-end e web designer baseado em Fortaleza (Brasil). Cria landing pages de alta conversão, sites institucionais premium, sistemas internos e CRM sob medida e aplicativos iOS e Android, além de otimização de performance e SEO técnico, para empresas de qualquer nicho no Brasil e em Portugal.
 
 Otávio Cruz projeta e desenvolve sites sob medida, do layout ao código de produção, com foco em velocidade de carregamento, animações fluidas e design que transforma visitantes em clientes. O atendimento é feito online para clientes no Brasil e em Portugal. Orçamentos e contato pelo WhatsApp.
 
@@ -8,6 +8,8 @@ Otávio Cruz projeta e desenvolve sites sob medida, do layout ao código de prod
 
 - **Landing Pages de Alta Conversão**: páginas de venda e captação com um único objetivo — transformar visita em contato. Copy com hierarquia, carregamento instantâneo e chamadas para ação no ponto certo, prontas para tráfego pago.
 - **Sites Institucionais Premium**: o site oficial da marca, com design exclusivo e animações fluidas, pensado para gerar confiança e pedidos de orçamento.
+- **Sistemas Internos e CRM sob medida**: painéis que a equipe usa todo dia — dados de várias fontes num lugar só, acesso por perfil, relatórios confiáveis e integrações como WhatsApp oficial (Meta Cloud API) e importação de planilhas.
+- **Aplicativos iOS e Android**: apps de campo com dados em tempo real, mapa, notificações e permissão por perfil, da primeira tela à publicação nas lojas.
 - **Otimização de Performance e SEO**: Core Web Vitals, HTML pré-renderizado, dados estruturados e SEO técnico para aparecer no Google e ser lido por assistentes de IA.
 
 ## Atendimento
@@ -20,10 +22,12 @@ Otávio Cruz projeta e desenvolve sites sob medida, do layout ao código de prod
 
 ## Stack
 
-React, Vite, GSAP (animações e ScrollTrigger), Tailwind CSS e Supabase.
+React, TypeScript, Vite, GSAP (animações e ScrollTrigger), Tailwind CSS, Supabase, React Native com Expo e Firebase.
 
 ## Projetos
 
+- [Maria Pitanga CRM](https://crm.mariapitangaacaiteria.com.br): CRM e dashboards de uma rede de franquias de açaí — base de clientes, segmentação, campanhas de WhatsApp com aprovação por loja, Curva ABC, NPS e geomarketing. Acesso restrito.
+- Rastreamento MP: aplicativo iOS e Android de rastreamento de entregas da mesma rede, com perfis de logística, supervisor e motorista, rotas, mapa em tempo real e notificações. Demonstração a pedido.
 - [Maria Pitanga — Site institucional](https://otaviocrz.github.io/Site-Maria-Pitanga/): site oficial de uma rede de franquias de açaí.
 - [Unimais — Landing page de alta conversão](https://otaviocrz.github.io/Landing-Page-Unimais/): página de captação focada em conversão.
 - [Maria Pitanga Portugal — Expansão internacional](https://mariapitangaacaiteria.pt/): site da expansão da marca para Portugal.
