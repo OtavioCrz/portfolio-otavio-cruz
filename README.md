@@ -311,11 +311,11 @@ no [Squoosh](https://squoosh.app) ou com `cwebp -q 86 -resize 1200 0`) e atualiz
 no `projects.js`. Capa de app é uma composição: duas telas lado a lado sobre fundo escuro, no
 mesmo 1200×595 das outras.
 
-Projeto **sem link público** — um sistema interno, um app que ainda não está nas lojas — usa o
-campo opcional `access` do `projects.js` ("Acesso restrito", "Demonstração a pedido"). Ele vira
-uma etiqueta ao lado da função e entra no rótulo de acessibilidade do link, para ninguém clicar
-esperando outra coisa; o `href` aponta para a tela de entrada do sistema ou para a conversa no
-WhatsApp.
+O campo opcional `access` do `projects.js` ("Acesso restrito", "Disponível na Google Play") vira
+uma etiqueta ao lado da função e entra no rótulo de acessibilidade do link: nem todo clique leva
+a um site que dá para navegar. Um sistema interno aponta para a tela de entrada; um app, para a
+ficha na loja; um projeto sem endereço nenhum, para a conversa no WhatsApp. Projeto com site
+aberto não usa o campo.
 
 ---
 

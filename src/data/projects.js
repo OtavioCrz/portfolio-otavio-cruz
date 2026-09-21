@@ -13,17 +13,15 @@ export const CONTACT = {
   phoneLabel: '+55 85 98852-8359',
 }
 
-const whatsapp = (text) => `${CONTACT.whatsapp}?text=${encodeURIComponent(text)}`
-
 /* Capas: WebP de 1200px de largura (≈ 2:1), gerados a partir dos PNGs de ~1904px
    que ficam na mesma pasta como originais. 1200px cobrem a maior exibição — a capa
-   do celular a 3x de densidade — e as três pesam 223 KB, contra 3,9 MB em PNG.
+   do celular a 3x de densidade — e as cinco pesam 313 KB, contra 5,1 MB em PNG.
    `coverWidth`/`coverHeight` são as dimensões reais de cada arquivo — reservam o
    espaço antes do load.
 
-   `access` é opcional: aparece como etiqueta ao lado da função. Sistema interno e
-   app não têm link público para "ver o projeto", então o link vai para a conversa
-   no WhatsApp ou para a tela de entrada, e a etiqueta avisa o que esperar. */
+   `access` é opcional: aparece como etiqueta ao lado da função e diz o que esperar antes
+   do clique — um sistema interno abre a tela de entrada, um app abre a ficha na loja.
+   Projeto com site aberto não usa o campo. */
 export const PROJECTS = [
   {
     id: 'maria-pitanga-crm',
@@ -41,12 +39,12 @@ export const PROJECTS = [
   {
     id: 'rastreamento-mp',
     index: '02',
-    title: 'Rastreamento MP',
-    role: 'App de rastreamento de entregas — iOS e Android',
-    access: 'Demonstração a pedido',
+    title: 'Rastreador MP',
+    role: 'App de rastreamento de entregas em tempo real',
+    access: 'Disponível na Google Play',
     year: '2026',
     stack: ['React Native', 'Expo', 'Firebase', 'Mapas'],
-    href: whatsapp('Olá, Otávio! Quero ver uma demonstração do app de rastreamento.'),
+    href: 'https://play.google.com/store/apps/details?id=com.mariapitanga.rastreadormp',
     cover: coverRastreamento,
     coverWidth: 1200,
     coverHeight: 595,

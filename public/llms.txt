@@ -27,7 +27,7 @@ React, TypeScript, Vite, GSAP (animações e ScrollTrigger), Tailwind CSS, Supab
 ## Projetos
 
 - [Maria Pitanga CRM](https://crm.mariapitangaacaiteria.com.br): CRM e dashboards de uma rede de franquias de açaí — base de clientes, segmentação, campanhas de WhatsApp com aprovação por loja, Curva ABC, NPS e geomarketing. Acesso restrito.
-- Rastreamento MP: aplicativo iOS e Android de rastreamento de entregas da mesma rede, com perfis de logística, supervisor e motorista, rotas, mapa em tempo real e notificações. Demonstração a pedido.
+- [Rastreador MP](https://play.google.com/store/apps/details?id=com.mariapitanga.rastreadormp): aplicativo Android de rastreamento de entregas da mesma rede, publicado na Google Play, com perfis de logística, supervisor e motorista, rotas, mapa em tempo real e notificações.
 - [Maria Pitanga — Site institucional](https://otaviocrz.github.io/Site-Maria-Pitanga/): site oficial de uma rede de franquias de açaí.
 - [Unimais — Landing page de alta conversão](https://otaviocrz.github.io/Landing-Page-Unimais/): página de captação focada em conversão.
 - [Maria Pitanga Portugal — Expansão internacional](https://mariapitangaacaiteria.pt/): site da expansão da marca para Portugal.
